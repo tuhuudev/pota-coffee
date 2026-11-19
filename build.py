@@ -3,7 +3,7 @@
 Outputs: index.html (with JSON-LD), index.md (Markdown for agents),
 llms.txt, robots.txt, sitemap.xml.
 
-Usage:  SITE_URL=https://tuhuudev.github.io/pota-coffee/ python3 build.py
+Usage:  SITE_URL=https://pota-coffee.pages.dev/ python3 build.py
 """
 import html
 import json
@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent
 DIST = ROOT / "dist"
-SITE_URL = os.environ.get("SITE_URL", "https://tuhuudev.github.io/pota-coffee/").rstrip("/") + "/"
+SITE_URL = os.environ.get("SITE_URL", "https://pota-coffee.pages.dev/").rstrip("/") + "/"
 
 D = json.loads((ROOT / "data" / "shop.json").read_text(encoding="utf-8"))
 SHOP, CATS, MENU, REVIEWS = D["shop"], D["categories"], D["menu"], D["reviews"]

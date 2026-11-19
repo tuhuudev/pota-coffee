@@ -18,7 +18,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SITE_URL: https://tuhuudev.github.io/pota-coffee/
+  SITE_URL: https://pota-coffee.pages.dev/  # canonical (Cloudflare)
+  GH_PAGES_URL: https://tuhuudev.github.io/pota-coffee/
 
 jobs:
   build-test:
@@ -62,8 +63,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install playwright==1.49.1 && python -m playwright install --with-deps chromium
-      - name: Agent-ready tests (live site)
-        run: sleep 20 && python tests/agent_ready.py --url "$SITE_URL" --runs 5
+      - name: Agent-ready tests (GitHub Pages)
+        run: sleep 20 && python tests/agent_ready.py --url "$GH_PAGES_URL" --runs 5
+      - name: Agent-ready tests (Cloudflare Pages)
+        continue-on-error: true
+        run: sleep 60 && python tests/agent_ready.py --url "$SITE_URL" --runs 5
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,0 +1,9 @@
+# Cloudflare Pages project config (Git integration reads this file).
+name = "pota-coffee"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-11-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pota-coffee-analytics"
+database_id = "60af0cb3-8c80-4bf6-a56d-da38cd956c8a"

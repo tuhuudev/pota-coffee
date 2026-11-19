@@ -53,6 +53,11 @@ try:
     metrics["markdown_tokens_est"] = round(len(md) / 3.2)
 except Exception as ex:
     check("Có bản Markdown index.md", False, str(ex))
+try:
+    r = urllib.request.urlopen(urllib.request.Request(BASE, headers={"Accept": "text/markdown"}), timeout=30)
+    metrics["markdown_negotiation"] = r.headers.get("content-type", "").startswith("text/markdown")
+except Exception:
+    metrics["markdown_negotiation"] = False
 metrics["html_kb"] = round(len(raw.encode()) / 1024, 1)
 metrics["html_gz_kb"] = round(len(gzip.compress(raw.encode(), 9)) / 1024, 1)
 metrics["html_tokens_est"] = round(len(raw) / 3.2)
