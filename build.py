@@ -8,6 +8,7 @@ Usage:  SITE_URL=https://pota-coffee.tuhuu-dev.workers.dev/ python3 build.py
 import html
 import json
 import os
+import re
 import shutil
 import subprocess
 from datetime import date
@@ -68,28 +69,56 @@ md.append(f"Đặt món: {SITE_URL}#dat-mon (form là WebMCP tool `dat_mon`).")
 markdown_str = "\n".join(md) + "\n"
 
 # ---------- HTML pieces ----------
+ART = {  # small inline illustrations per category (no photos yet)
+    "ca-phe": '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 24h30v14a13 13 0 0 1-13 13h-4A13 13 0 0 1 14 38z" fill="currentColor" opacity=".9"/><path d="M44 28h4a6 6 0 0 1 0 12h-5" fill="none" stroke="currentColor" stroke-width="4"/><path d="M22 10c0 4 4 4 4 8M30 8c0 4 4 4 4 8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".55"/><rect x="10" y="53" width="40" height="4" rx="2" fill="currentColor" opacity=".5"/></svg>',
+    "tra": '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 18h28l-4 38H22z" fill="currentColor" opacity=".9"/><path d="M36 18l6-12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="27" cy="34" r="3.5" fill="#fff" opacity=".7"/><circle cx="36" cy="42" r="3" fill="#fff" opacity=".6"/><path d="M19 26h26" stroke="#fff" stroke-width="2" opacity=".5"/></svg>',
+    "khac": '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M17 22h30l-3 34H20z" fill="currentColor" opacity=".9"/><path d="M14 16h36v6H14z" fill="currentColor"/><path d="M24 16c0-6 16-6 16 0" fill="currentColor" opacity=".6"/><path d="M21 34c7 4 15-4 22 0" stroke="#fff" stroke-width="3" fill="none" opacity=".55"/></svg>',
+}
+SPRITE = '<svg width="0" height="0" style="position:absolute" aria-hidden="true">' + "".join(
+    f'<symbol id="a-{k}" viewBox="0 0 64 64">' + re.sub(r'^<svg[^>]*>|</svg>$', '', v) + '</symbol>' for k, v in ART.items()) + '</svg>'
+ART = {k: f'<svg viewBox="0 0 64 64" aria-hidden="true"><use href="#a-{k}"/></svg>' for k in ART}
 cards, dialogs = [], []
 for m in MENU:
     cards.append(f'''
       <li class="card" data-cat="{m['cat']}" style="view-transition-name: item-{m['id']}">
-        <div class="card-top">
+        <div class="art art-{m['cat']}">{ART[m['cat']]}</div>
+        <div class="card-body">
           <span class="chip">{e(m['tag'])}</span>
-          <span class="cat">{e(CATS[m['cat']])}</span>
+          <h3>{e(m['name'])}</h3>
+          <p class="desc">{e(m['desc'])}</p>
+          <div class="card-foot">
+            <p class="price">{vnd(m['price'])}</p>
+            <button type="button" class="pick" commandfor="dlg-{m['id']}" command="show-modal">Chọn<span class="sr"> {e(m['name'])}</span></button>
+          </div>
         </div>
-        <h3>{e(m['name'])}</h3>
-        <p class="price">{vnd(m['price'])}</p>
-        <button type="button" class="btn ghost" commandfor="dlg-{m['id']}" command="show-modal"
-                aria-label="Xem chi tiết {e(m['name'])}">Chi tiết</button>
       </li>''')
+    size_radios = "".join(
+        f'<label class="seg"><input type="radio" name="size" value="{s["id"]}"{" checked" if i == 0 else ""}>'
+        f'<span><b>{e(s["id"])}</b><small>{"+" + vnd(s["extra"]) if s["extra"] else "giá gốc"}</small></span></label>'
+        for i, s in enumerate(SIZES))
     dialogs.append(f'''
-  <dialog id="dlg-{m['id']}" aria-labelledby="dlg-{m['id']}-t">
-    <h2 id="dlg-{m['id']}-t">{e(m['name'])}</h2>
-    <p>{e(m['desc'])}</p>
-    <p class="price big">{vnd(m['price'])} <small>(size M)</small></p>
-    <div class="row">
-      <button type="button" class="btn" data-quick-add="{m['id']}" commandfor="dlg-{m['id']}" command="close">Thêm vào giỏ</button>
-      <button type="button" class="btn ghost" commandfor="dlg-{m['id']}" command="close">Đóng</button>
-    </div>
+  <dialog id="dlg-{m['id']}" class="sheet" aria-labelledby="dlg-{m['id']}-t">
+    <form method="dialog" class="item-form" data-item="{m['id']}">
+      <div class="sheet-head">
+        <div class="art art-{m['cat']}">{ART[m['cat']]}</div>
+        <div>
+          <h2 id="dlg-{m['id']}-t">{e(m['name'])}</h2>
+          <p class="desc">{e(m['desc'])}</p>
+        </div>
+        <button type="button" class="x" commandfor="dlg-{m['id']}" command="close" aria-label="Đóng">&times;</button>
+      </div>
+      <fieldset class="sizes"><legend>Size</legend>{size_radios}</fieldset>
+      <div class="qty-row">
+        <span class="lbl" id="q-{m['id']}">Số lượng</span>
+        <div class="stepper">
+          <button type="button" data-step="-1" aria-label="Bớt 1 ly">&minus;</button>
+          <input type="number" name="qty" value="1" min="1" max="20" inputmode="numeric" aria-labelledby="q-{m['id']}">
+          <button type="button" data-step="1" aria-label="Thêm 1 ly">+</button>
+        </div>
+      </div>
+      <label class="note">Ghi chú <input type="text" name="note" placeholder="Ít đá, ít ngọt…"></label>
+      <button type="submit" class="btn primary block">Thêm vào giỏ · <span data-line-total>{vnd(m['price'])}</span></button>
+    </form>
   </dialog>''')
 
 options = "\n".join(
@@ -100,7 +129,8 @@ size_opts = "\n".join(
     f'<span class="opt-price">{"+" + vnd(s["extra"]) if s["extra"] else "giá gốc"}</span></option>' for s in SIZES)
 reviews_html = "\n".join(f"<li>{e(r)}</li>" for r in REVIEWS)
 client_data = json.dumps({"menu": MENU, "sizes": {s["id"]: s["extra"] for s in SIZES},
-                          "reviews": REVIEWS}, ensure_ascii=False)
+                          "reviews": REVIEWS, "open": SHOP.get("open", "06:00"),
+                          "close": SHOP.get("close", "21:00")}, ensure_ascii=False)
 
 tpl = (ROOT / "src" / "template.html").read_text(encoding="utf-8")
 page = (tpl.replace("%%JSONLD%%", jsonld_str.replace("</", "<\\/"))
@@ -114,9 +144,12 @@ page = (tpl.replace("%%JSONLD%%", jsonld_str.replace("</", "<\\/"))
            .replace("%%JSONLD_PRETTY%%", e(jsonld_str))
            .replace("%%HOURS%%", e(SHOP["hours_text"]))
            .replace("%%CITY%%", e(SHOP["city"]))
+           .replace("tel:%%PHONE%%", "tel:" + "".join(c for c in SHOP["phone"] if c.isdigit() or c == "+"))
            .replace("%%PHONE%%", e(SHOP["phone"]))
            .replace("%%ADDRESS%%", e(SHOP["address"]))
-           .replace("%%SITE_URL%%", e(SITE_URL)))
+           .replace("%%SITE_URL%%", e(SITE_URL))
+           .replace("%%SPRITE%%", SPRITE)
+           .replace("%%TAGLINE%%", e(SHOP.get("tagline", ""))))
 sha = os.environ.get("WORKERS_CI_COMMIT_SHA") or os.environ.get("GITHUB_SHA")
 if not sha:
     try:

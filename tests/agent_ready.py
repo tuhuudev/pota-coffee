@@ -101,7 +101,7 @@ with sync_playwright() as p:
         check(f"Agent đặt 2 × {target['name']} ({big['label']})", False, str(ex).splitlines()[0][:160])
     try:
         last = DATA["menu"][-1]["name"]
-        pg.get_by_role("button", name=f"Xem chi tiết {last}").click(timeout=3000)
+        pg.get_by_role("button", name=f"Chọn {last}").click(timeout=3000)
         check(f"Agent mở chi tiết {last}", pg.get_by_role("dialog", name=last).is_visible())
     except Exception as ex:
         check(f"Agent mở chi tiết {DATA['menu'][-1]['name']}", False, str(ex).splitlines()[0][:160])

@@ -2,223 +2,317 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pota's Coffee</title>
-<meta name="description" content="Pota's Coffee – quán cà phê mang đi tại Phan Thiết. Menu, giá và đặt món online.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pota's Coffee – Cà phê mang đi Phan Thiết</title>
+<meta name="description" content="Pota's Coffee – quán cà phê mang đi tại Phan Thiết. Xem menu, giá và đặt món trước, đến lấy ngay.">
+<meta name="theme-color" content="#0a6b74">
 <link rel="canonical" href="%%SITE_URL%%">
 <link rel="alternate" type="text/markdown" href="index.md" title="Menu dạng Markdown cho AI agent">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230a6b74'/%3E%3Cpath d='M16 26h26v10a11 11 0 0 1-11 11h-4a11 11 0 0 1-11-11z' fill='%23fff'/%3E%3Cpath d='M42 29h3a5 5 0 0 1 0 10h-4' fill='none' stroke='%23fff' stroke-width='3.5'/%3E%3C/svg%3E">
+<meta property="og:title" content="Pota's Coffee – Cà phê mang đi Phan Thiết">
+<meta property="og:description" content="Xem menu, giá và đặt món trước, đến lấy ngay.">
+<meta property="og:url" content="%%SITE_URL%%">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- 1. Structured data: sinh từ cùng nguồn dữ liệu với menu bên dưới -->
 <script type="application/ld+json">
 %%JSONLD%%
 </script>
 
 <style>
-/* Layout: một cột trên điện thoại, menu dạng lưới; màu biển Phan Thiết + nâu cà phê */
+/* Layout: mobile-first, một cột; thẻ món dạng lưới; giỏ hàng nổi ở đáy. Màu biển Phan Thiết + nâu cà phê + nắng. */
 :root {
-  --bg: #eef3f2;
+  --bg: #f2f5f4;
   --surface: #ffffff;
-  --ink: #1b2a2c;
-  --muted: #5b6d70;
+  --ink: #17262a;
+  --muted: #5a6b6e;
   --sea: #0a6b74;
+  --sea-ink: #ffffff;
   --coffee: #6a4330;
   --sun: #e7a33a;
-  --line: #d3dedc;
+  --line: #dbe4e2;
   --ok: #1f7a4a;
   --no: #a33a2c;
+  --tint-ca-phe: #efe4dc;
+  --tint-tra: #fbecd2;
+  --tint-khac: #dcefee;
+  --shadow: 0 1px 2px rgb(15 35 38 / .06), 0 8px 24px rgb(15 35 38 / .06);
   --display: "Bricolage Grotesque", "Be Vietnam Pro", system-ui, sans-serif;
   --body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius: 18px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f1a1b; --surface: #172526; --ink: #e6efee; --muted: #9db0b2;
-    --sea: #4fb8c1; --coffee: #d6a283; --sun: #f0b85a; --line: #2a3b3d;
-    --ok: #5cc98d; --no: #f08a7a; color-scheme: dark;
+    --bg: #0e1819; --surface: #162325; --ink: #e8f0ef; --muted: #9fb1b3; --sea: #53bcc5; --sea-ink: #062326;
+    --coffee: #d9a688; --sun: #f0b85a; --line: #263638; --ok: #5cc98d; --no: #f08a7a;
+    --tint-ca-phe: #2b221d; --tint-tra: #2e2617; --tint-khac: #17302f;
+    --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .25); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f1a1b; --surface: #172526; --ink: #e6efee; --muted: #9db0b2;
-  --sea: #4fb8c1; --coffee: #d6a283; --sun: #f0b85a; --line: #2a3b3d;
-  --ok: #5cc98d; --no: #f08a7a; color-scheme: dark;
+  --bg: #0e1819; --surface: #162325; --ink: #e8f0ef; --muted: #9fb1b3; --sea: #53bcc5; --sea-ink: #062326;
+  --coffee: #d9a688; --sun: #f0b85a; --line: #263638; --ok: #5cc98d; --no: #f08a7a;
+  --tint-ca-phe: #2b221d; --tint-tra: #2e2617; --tint-khac: #17302f;
+  --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .25); color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-body {
-  margin: 0; background: var(--bg); color: var(--ink);
-  font: 16px/1.55 var(--body);
-}
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); padding-bottom: env(safe-area-inset-bottom); }
 a { color: var(--sea); }
-h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
-.wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
-:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
-
-.demo-note {
-  background: var(--coffee); color: var(--bg); font-size: 14px; padding: 8px 0;
-}
-.demo-note p { margin: 0; }
-
-header.site { padding: 28px 0 20px; border-bottom: 1px solid var(--line); view-transition-name: site-header; }
-header.site .wrap { display: grid; gap: 10px; }
-.brand { font-size: clamp(34px, 8vw, 56px); font-weight: 800; letter-spacing: -0.02em; }
-.brand span { color: var(--sea); }
-.facts { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 15px; margin: 0; padding: 0; list-style: none; }
-.facts li { display: flex; align-items: center; gap: 6px; }
-
-nav.top ul { display: flex; gap: 16px; list-style: none; margin: 4px 0 0; padding: 0; font-weight: 600; }
-
-main { display: grid; gap: 40px; padding: 28px 0 48px; }
-section > h2 { font-size: 26px; margin-bottom: 14px; }
-.lead { color: var(--muted); margin: -6px 0 16px; max-width: 62ch; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-left)); }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; border-radius: 8px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ---- buttons ---- */
-.btn {
-  font: 600 15px/1 var(--body); border: 0; border-radius: 10px; cursor: pointer;
-  padding: 11px 16px; background: var(--sea); color: var(--surface);
-}
-.btn.ghost { background: transparent; color: var(--sea); box-shadow: inset 0 0 0 1.5px var(--sea); }
-.btn:hover { filter: brightness(1.08); }
-.row { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: 600 15px/1 var(--body);
+  border: 0; border-radius: 999px; cursor: pointer; padding: 13px 20px; text-decoration: none; min-height: 46px; }
+.btn.primary { background: var(--sea); color: var(--sea-ink); }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
+.btn.block { width: 100%; }
+.btn:hover { filter: brightness(1.06); }
+.btn:active { transform: translateY(1px); }
 
-/* ---- filter ---- */
-.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.filters button {
-  font: 500 15px/1 var(--body); padding: 9px 14px; border-radius: 999px; cursor: pointer;
-  border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
-}
+/* ---- top bar ---- */
+.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); view-transition-name: top; }
+.top .wrap { display: flex; align-items: center; gap: 12px; height: 60px; }
+.logo { display: flex; align-items: center; gap: 10px; font: 800 20px/1 var(--display); color: var(--ink); text-decoration: none; }
+.logo svg { width: 34px; height: 34px; }
+.top nav { margin-left: auto; }
+.top nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.top nav a { display: block; padding: 8px 10px; border-radius: 10px; color: var(--ink); text-decoration: none; font-weight: 500; font-size: 15px; }
+.top nav a:hover { background: var(--surface); }
+@media (max-width: 560px) { .top nav li:not(:first-child) { display: none; } }
+
+/* ---- hero ---- */
+.hero { padding: 28px 0 8px; }
+.hero .wrap { display: grid; gap: 18px; }
+@media (min-width: 820px) { .hero .wrap { grid-template-columns: 1.3fr 1fr; align-items: center; } }
+.status { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding: 6px 12px;
+  border-radius: 999px; background: var(--surface); box-shadow: var(--shadow); justify-self: start; }
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.status.open::before { background: var(--ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 20%, transparent); }
+.status.closed::before { background: var(--no); }
+.hero h1 { font-size: clamp(34px, 9vw, 60px); font-weight: 800; margin-top: 12px; }
+.hero h1 span { color: var(--sea); }
+.hero .tag { font-size: clamp(17px, 4.2vw, 20px); color: var(--muted); margin: 10px 0 18px; max-width: 34ch; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.facts { display: grid; gap: 10px; background: var(--surface); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin: 0; }
+.facts div { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; }
+.facts dt { color: var(--sea); padding-top: 2px; }
+.facts dt svg { width: 20px; height: 20px; }
+.facts dd { margin: 0; }
+.facts small { color: var(--muted); display: block; }
+.demo { font-size: 13px; color: var(--muted); margin: 12px 0 0; }
+
+main { display: grid; gap: 44px; padding: 28px 0 120px; }
+section > h2 { font-size: clamp(26px, 6vw, 34px); }
+.sec-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.lead { color: var(--muted); margin: 6px 0 0; max-width: 60ch; }
+
+/* ---- filters (sticky under top bar) ---- */
+.filters { position: sticky; top: 60px; z-index: 10; display: flex; gap: 8px; overflow-x: auto; padding: 10px 0;
+  margin: 0 -16px 6px; padding-inline: 16px; background: var(--bg); scrollbar-width: none; }
+.filters::-webkit-scrollbar { display: none; }
+.filters button { flex: none; font: 600 15px/1 var(--body); padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); min-height: 42px; }
 .filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
 /* ---- menu cards ---- */
-.menu { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-.card {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-  padding: 14px; display: grid; gap: 8px; align-content: start;
-}
+.menu { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .menu { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .menu { grid-template-columns: repeat(3, 1fr); } }
+.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); display: grid;
+  grid-template-columns: 96px 1fr; overflow: hidden; }
 .card[hidden] { display: none; }
-.card h3 { font-size: 19px; font-weight: 600; }
-.card-top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-.cat { color: var(--muted); }
-.chip { background: color-mix(in srgb, var(--sun) 22%, transparent); color: var(--coffee); padding: 3px 8px; border-radius: 999px; font-weight: 600; }
-.price { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--coffee); }
-.price.big { font-size: 22px; }
-.price small { font-weight: 400; color: var(--muted); font-size: 14px; }
-.card .btn { justify-self: start; padding: 8px 12px; font-size: 14px; }
-
-::view-transition-group(*) { animation-duration: 240ms; }
+.art { display: grid; place-items: center; color: var(--coffee); }
+.art svg { width: 56px; height: 56px; }
+.art-ca-phe { background: var(--tint-ca-phe); }
+.art-tra { background: var(--tint-tra); color: #c9781f; }
+.art-khac { background: var(--tint-khac); color: var(--sea); }
+.card-body { padding: 14px 14px 12px; display: grid; gap: 4px; align-content: start; }
+.chip { justify-self: start; font-size: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase;
+  color: var(--coffee); background: color-mix(in srgb, var(--sun) 22%, transparent); padding: 3px 8px; border-radius: 999px; }
+.card h3 { font-size: 19px; font-weight: 600; margin-top: 4px; }
+.desc { color: var(--muted); font-size: 14px; margin: 0; }
+.card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.price { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; font-size: 17px; }
+.pick { font: 600 15px/1 var(--body); border: 0; border-radius: 999px; padding: 10px 18px; min-height: 42px; cursor: pointer;
+  background: var(--sea); color: var(--sea-ink); }
+::view-transition-group(*) { animation-duration: 220ms; }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
 
-/* ---- dialogs ---- */
-dialog {
-  border: 0; border-radius: 16px; padding: 20px; width: min(440px, calc(100% - 32px));
-  background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgb(0 0 0 / .25);
+/* ---- dialogs as bottom sheets on phones ---- */
+dialog { border: 0; padding: 0; background: var(--surface); color: var(--ink); width: min(480px, 100%);
+  border-radius: 22px; box-shadow: 0 20px 60px rgb(0 0 0 / .3); max-height: 92dvh; }
+dialog::backdrop { background: rgb(8 24 26 / .5); backdrop-filter: blur(2px); }
+@media (max-width: 560px) {
+  dialog.sheet { margin: auto 0 0; width: 100%; max-width: 100%; border-radius: 22px 22px 0 0;
+    padding-bottom: env(safe-area-inset-bottom); }
+  dialog.sheet[open] { animation: up .22s ease-out; }
 }
-dialog::backdrop { background: rgb(10 30 32 / .45); backdrop-filter: blur(2px); }
-dialog h2 { font-size: 24px; margin-bottom: 8px; }
-dialog pre { max-height: 55vh; overflow: auto; font-size: 12.5px; background: var(--bg); padding: 12px; border-radius: 10px; white-space: pre-wrap; word-break: break-word; }
-dialog.wide { width: min(640px, calc(100% - 32px)); }
+@keyframes up { from { transform: translateY(24px); opacity: .6; } }
+@media (prefers-reduced-motion: reduce) { dialog.sheet[open] { animation: none; } }
+dialog form, .dlg-body { display: grid; gap: 16px; padding: 18px; }
+.sheet-head { display: grid; grid-template-columns: 64px 1fr auto; gap: 14px; align-items: start; }
+.sheet-head .art { width: 64px; height: 64px; border-radius: 14px; }
+.sheet-head .art svg { width: 40px; height: 40px; }
+.sheet-head h2 { font-size: 22px; }
+.x { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--bg); color: var(--ink); font-size: 24px; line-height: 1; cursor: pointer; }
+fieldset { border: 0; margin: 0; padding: 0; }
+legend, .lbl { font-weight: 600; font-size: 14px; margin-bottom: 8px; padding: 0; }
+.sizes { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+.sizes legend { grid-column: 1 / -1; }
+.seg input { position: absolute; opacity: 0; }
+.seg span { display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--line); cursor: pointer; }
+.seg small { color: var(--muted); }
+.seg input:checked + span { border-color: var(--sea); background: color-mix(in srgb, var(--sea) 10%, transparent); }
+.seg input:focus-visible + span { outline: 3px solid var(--sun); outline-offset: 2px; }
+.qty-row { display: flex; align-items: center; justify-content: space-between; }
+.qty-row .lbl { margin: 0; }
+.stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 999px; overflow: hidden; }
+.stepper button { width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink); font-size: 22px; cursor: pointer; }
+.stepper input { width: 44px; text-align: center; border: 0; background: transparent; color: var(--ink); font: 600 17px var(--body); -moz-appearance: textfield; }
+.stepper input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.note, .field { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+.note input, .field input, .field select {
+  font: 400 16px/1.3 var(--body); padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--line);
+  background: var(--bg); color: var(--ink); width: 100%; min-height: 46px; }
 
-/* ---- popover + anchor positioning ---- */
-.tip-btn {
-  anchor-name: --ship-tip;
-  width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--muted);
-  background: transparent; color: var(--muted); font: 700 13px/1 var(--body); cursor: pointer; padding: 0;
-}
-#ship-tip {
-  margin: 0; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; max-width: 260px;
-  background: var(--ink); color: var(--bg); font-size: 14px;
-  position-anchor: --ship-tip; position-area: bottom span-right; margin-top: 8px;
-  position-try-fallbacks: flip-block, flip-inline;
-}
-
-/* ---- order form ---- */
-.order { display: grid; gap: 20px; grid-template-columns: 1fr; }
-@media (min-width: 760px) { .order { grid-template-columns: 1.2fr 1fr; } }
-form.panel, .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
-form.panel { display: grid; gap: 12px; }
-.field { display: grid; gap: 5px; }
-.field label { font-weight: 600; font-size: 14px; }
-.field input, .field select, .field textarea {
-  font: 16px/1.3 var(--body); padding: 10px 12px; border-radius: 10px;
-  border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); width: 100%;
-}
-.two { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
-form.panel:tool-form-active { box-shadow: 0 0 0 3px var(--sun); }
-
-/* Customizable select (enhancement; trình duyệt khác giữ select gốc) */
+/* ---- quick order ---- */
+.quick { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; display: grid; gap: 14px; }
+.quick .row3 { display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .quick .row3 { grid-template-columns: 2fr 1fr 1fr; } }
+.quick-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.tip-btn { anchor-name: --ship-tip; display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; color: var(--muted);
+  font: 500 14px var(--body); cursor: pointer; padding: 8px 4px; text-decoration: underline dotted; }
+#ship-tip { margin: 0; border: 0; border-radius: 12px; padding: 12px 14px; max-width: 280px; background: var(--ink); color: var(--bg);
+  font-size: 14px; box-shadow: var(--shadow); position-anchor: --ship-tip; position-area: bottom span-right; margin-top: 8px;
+  position-try-fallbacks: flip-block, flip-inline; }
+form.quick:tool-form-active { box-shadow: 0 0 0 3px var(--sun); }
 @supports (appearance: base-select) {
   .field select, .field select::picker(select) { appearance: base-select; }
-  .field select::picker(select) { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 4px; }
-  .field select option { display: flex; justify-content: space-between; gap: 16px; padding: 9px 10px; border-radius: 8px; }
-  .field select option:checked { background: color-mix(in srgb, var(--sea) 14%, transparent); }
+  .field select::picker(select) { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); padding: 6px; box-shadow: var(--shadow); }
+  .field select option { display: flex; justify-content: space-between; gap: 16px; padding: 10px 12px; border-radius: 10px; }
+  .field select option:checked { background: color-mix(in srgb, var(--sea) 12%, transparent); }
   .field select option::checkmark { display: none; }
   .field select .opt-price { color: var(--muted); font-variant-numeric: tabular-nums; }
   .field select selectedcontent .opt-price, .field select .sep { display: none; }
 }
 
+/* ---- cart bar + sheet ---- */
+.cartbar { position: fixed; z-index: 30; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+  max-width: 560px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 18px;
+  background: var(--ink); color: var(--bg); border-radius: 999px; box-shadow: 0 10px 30px rgb(0 0 0 / .3); }
+.cartbar[hidden] { display: none; }
+.cartbar .sum { display: grid; line-height: 1.2; }
+.cartbar .sum small { opacity: .75; font-size: 13px; }
+.cartbar .sum b { font-variant-numeric: tabular-nums; font-size: 17px; }
+.cartbar .btn { margin-left: auto; background: var(--sun); color: #1d1405; }
+.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.lines li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.lines .meta { color: var(--muted); font-size: 14px; }
+.lines .stepper { justify-self: start; }
+.lines .amt { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.lines .stepper button, .lines .stepper output { width: 36px; height: 36px; font-size: 18px; display: grid; place-items: center; }
+.total { display: flex; justify-content: space-between; font-weight: 700; font-size: 19px; font-variant-numeric: tabular-nums; }
+.two { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+.fine { color: var(--muted); font-size: 13px; margin: 0; }
 
-.cart ul { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 8px; }
-.cart li { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px dashed var(--line); padding-bottom: 8px; font-variant-numeric: tabular-nums; }
-.cart .total { display: flex; justify-content: space-between; font-weight: 700; font-size: 18px; font-variant-numeric: tabular-nums; }
-.empty { color: var(--muted); }
-.agent-log { font-size: 13px; color: var(--muted); margin: 10px 0 0; min-height: 1em; }
+/* ---- toast ---- */
+#toast { position: fixed; z-index: 40; left: 50%; top: 72px; transform: translate(-50%, -8px); opacity: 0; pointer-events: none;
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 600;
+  transition: opacity .2s, transform .2s; max-width: calc(100% - 32px); }
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---- reviews ---- */
-.reviews ul { margin: 0 0 14px; padding-left: 20px; display: grid; gap: 6px; max-width: 70ch; }
-.summary { border-left: 4px solid var(--sea); padding: 10px 14px; background: var(--surface); border-radius: 0 10px 10px 0; margin-top: 12px; }
+.reviews ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.reviews li { background: var(--surface); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); position: relative; }
+.reviews li::before { content: "“"; font: 800 40px/1 var(--display); color: var(--sun); display: block; height: 22px; }
+.summary { border-left: 4px solid var(--sea); padding: 12px 16px; background: var(--surface); border-radius: 0 14px 14px 0; margin-top: 12px; }
 .summary p { margin: 4px 0 0; }
 .summary .src { font-size: 13px; color: var(--muted); }
 
-/* ---- AI-ready check ---- */
-.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-.checks li { background: var(--surface); border: 1px solid var(--line); border-left-width: 5px; border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; }
-.checks li.yes { border-left-color: var(--ok); }
-.checks li.no { border-left-color: var(--no); }
-.checks b { font-size: 15px; }
-.checks .state { font-size: 13px; font-weight: 600; }
-.checks .yes .state { color: var(--ok); }
-.checks .no .state { color: var(--no); }
+/* ---- developer corner ---- */
+details.dev { background: var(--surface); border-radius: var(--radius); padding: 0 16px; box-shadow: var(--shadow); }
+details.dev summary { cursor: pointer; padding: 16px 0; font-weight: 600; }
+details.dev[open] { padding-bottom: 16px; }
+.checks { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.checks li { border: 1px solid var(--line); border-left-width: 5px; border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; }
+.checks li.yes { border-left-color: var(--ok); } .checks li.no { border-left-color: var(--no); }
+.checks .state { font-size: 13px; font-weight: 600; } .checks .yes .state { color: var(--ok); } .checks .no .state { color: var(--no); }
 .checks small { color: var(--muted); font-size: 13px; }
+dialog pre { max-height: 60dvh; overflow: auto; font-size: 12.5px; background: var(--bg); padding: 12px; border-radius: 10px; white-space: pre-wrap; word-break: break-word; margin: 0; }
 
-footer { border-top: 1px solid var(--line); padding: 20px 0 32px; color: var(--muted); font-size: 14px; }
+footer { border-top: 1px solid var(--line); padding: 24px 0 110px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: grid; gap: 6px; }
 </style>
 </head>
 <body>
+%%SPRITE%%
 
-<div class="demo-note" role="note">
-  <div class="wrap"><p>Bản thử nghiệm: menu, giá, đánh giá và số điện thoại là dữ liệu mẫu.</p></div>
-</div>
-
-<header class="site">
+<header class="top">
   <div class="wrap">
-    <h1 class="brand">Pota's <span>Coffee</span></h1>
-    <ul class="facts" aria-label="Thông tin quán">
-      <li>Cà phê mang đi · %%CITY%%</li>
-      <li>Mở cửa %%HOURS%%</li>
-      <li>Gọi đặt: %%PHONE%%</li>
-    </ul>
-    <nav class="top" aria-label="Điều hướng chính">
+    <a class="logo" href="#top" aria-label="Pota's Coffee, về đầu trang">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="var(--sea)"/><path d="M16 26h26v10a11 11 0 0 1-11 11h-4a11 11 0 0 1-11-11z" fill="var(--sea-ink)"/><path d="M42 29h3a5 5 0 0 1 0 10h-4" fill="none" stroke="var(--sea-ink)" stroke-width="3.5"/></svg>
+      <span>Pota's</span>
+    </a>
+    <nav aria-label="Điều hướng chính">
       <ul>
         <li><a href="#menu">Menu</a></li>
-        <li><a href="#dat-mon">Đặt món</a></li>
+        <li><a href="#dat-nhanh">Đặt nhanh</a></li>
         <li><a href="#danh-gia">Đánh giá</a></li>
-        <li><a href="#ai-ready">AI-ready</a></li>
       </ul>
     </nav>
   </div>
 </header>
 
+<section class="hero" id="top" aria-labelledby="hero-t">
+  <div class="wrap">
+    <div>
+      <p class="status" id="status" role="status">Giờ mở cửa %%HOURS%%</p>
+      <h1 id="hero-t">Pota's <span>Coffee</span></h1>
+      <p class="tag">%%TAGLINE%%. Đặt trước trên web, đến quán lấy ngay.</p>
+      <div class="cta">
+        <a class="btn primary" href="#menu">Xem menu và đặt món</a>
+        <a class="btn ghost" href="tel:%%PHONE%%">Gọi %%PHONE%%</a>
+      </div>
+      <p class="demo">Bản thử nghiệm: menu, giá, đánh giá và số điện thoại đang là dữ liệu mẫu.</p>
+    </div>
+    <dl class="facts">
+      <div>
+        <dt><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="sr">Giờ mở cửa</span></dt>
+        <dd>%%HOURS%%<small>Mang đi, không có chỗ ngồi</small></dd>
+      </div>
+      <div>
+        <dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg><span class="sr">Địa chỉ</span></dt>
+        <dd>%%ADDRESS%%<small>%%CITY%%</small></dd>
+      </div>
+      <div>
+        <dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span class="sr">Điện thoại</span></dt>
+        <dd>%%PHONE%%<small>Giao qua Grab, Xanh SM trong 3 km</small></dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
 <main class="wrap">
 
-  <!-- 2. Menu: lọc với View Transitions; 3. chi tiết bằng <dialog> + invoker commands -->
   <section id="menu" aria-labelledby="menu-t">
-    <h2 id="menu-t">Menu</h2>
-    <p class="lead">Bấm nhóm để lọc. Bấm "Chi tiết" để xem mô tả món: hộp thoại mở bằng thuộc tính HTML, không cần JavaScript.</p>
+    <div class="sec-head">
+      <div>
+        <h2 id="menu-t">Menu</h2>
+        <p class="lead">Chọn món, chọn size, thêm vào giỏ. Giá đã gồm ly mang đi.</p>
+      </div>
+    </div>
     <div class="filters" role="group" aria-label="Lọc theo nhóm">
       <button type="button" data-filter="all" aria-pressed="true">Tất cả</button>
       <button type="button" data-filter="ca-phe" aria-pressed="false">Cà phê</button>
@@ -229,14 +323,17 @@ footer { border-top: 1px solid var(--line); padding: 20px 0 32px; color: var(--m
     </ul>
   </section>
 
-  <!-- 6. Form đặt món = WebMCP declarative tool -->
-  <section id="dat-mon" aria-labelledby="order-t">
-    <h2 id="order-t">Đặt món mang đi</h2>
-    <p class="lead">Form này cũng là một tool cho AI agent (WebMCP): agent có thể điền và gửi đơn thay bạn, bạn vẫn thấy và xác nhận.</p>
-    <div class="order">
-      <form class="panel" id="order-form"
-            toolname="dat_mon"
-            tooldescription="Thêm một món vào giỏ hàng mang đi của Pota's Coffee. Chọn món, size và số lượng.">
+  <section id="dat-nhanh" aria-labelledby="order-t">
+    <div class="sec-head">
+      <div>
+        <h2 id="order-t">Đặt nhanh</h2>
+        <p class="lead">Biết món rồi? Chọn ở đây cho nhanh.</p>
+      </div>
+    </div>
+    <form class="quick" id="order-form"
+          toolname="dat_mon"
+          tooldescription="Thêm một món vào giỏ hàng mang đi của Pota's Coffee. Chọn món, size và số lượng.">
+      <div class="row3">
         <div class="field">
           <label for="f-item">Món</label>
           <select id="f-item" name="mon" required toolparamdescription="Mã món trong menu, ví dụ sua-da hoặc muoi">
@@ -244,98 +341,121 @@ footer { border-top: 1px solid var(--line); padding: 20px 0 32px; color: var(--m
 %%OPTIONS%%
           </select>
         </div>
-        <div class="two">
-          <div class="field">
-            <label for="f-size">Size</label>
-            <select id="f-size" name="size" toolparamdescription="M hoặc L (L thêm 5.000 đ)">
-              <button><selectedcontent></selectedcontent></button>
+        <div class="field">
+          <label for="f-size">Size</label>
+          <select id="f-size" name="size" toolparamdescription="M hoặc L (L thêm 5.000 đ)">
+            <button><selectedcontent></selectedcontent></button>
 %%SIZE_OPTIONS%%
-            </select>
-          </div>
-          <div class="field">
-            <label for="f-qty">Số lượng</label>
-            <input id="f-qty" name="so_luong" type="number" min="1" max="20" value="1" required
-                   toolparamdescription="Số ly, từ 1 đến 20">
-          </div>
+          </select>
         </div>
         <div class="field">
-          <label for="f-note">Ghi chú <span style="font-weight:400;color:var(--muted)">(không bắt buộc)</span></label>
-          <input id="f-note" name="ghi_chu" type="text" placeholder="Ít đá, ít ngọt…"
-                 toolparamdescription="Yêu cầu thêm như ít đá, ít ngọt">
+          <label for="f-qty">Số lượng</label>
+          <input id="f-qty" name="so_luong" type="number" min="1" max="20" value="1" required inputmode="numeric"
+                 toolparamdescription="Số ly, từ 1 đến 20">
         </div>
-        <div class="row" style="align-items:center">
-          <button type="submit" class="btn">Thêm vào giỏ</button>
-          <button type="button" class="tip-btn" commandfor="ship-tip" command="toggle-popover"
-                  aria-label="Cách nhận món">?</button>
-          <span style="font-size:14px;color:var(--muted)">Nhận món thế nào?</span>
-        </div>
-        <div id="ship-tip" popover>Đặt trước, đến quán lấy ngay không phải chờ. Giao tận nơi qua Grab hoặc Xanh SM trong bán kính 3 km. Tooltip này bám theo nút "?" bằng CSS Anchor Positioning.</div>
-      </form>
-
-      <div class="panel cart" aria-live="polite">
-        <h3 style="font-size:20px;margin-bottom:10px">Giỏ hàng</h3>
-        <ul id="cart-list"><li class="empty">Chưa có món nào.</li></ul>
-        <div class="total"><span>Tổng</span><span id="cart-total">0 đ</span></div>
-        <div class="row" style="margin-top:12px">
-          <button type="button" class="btn" id="checkout" commandfor="dlg-done" command="show-modal">Gửi đơn</button>
-          <button type="button" class="btn ghost" id="clear-cart">Xoá giỏ</button>
-        </div>
-        <p class="agent-log" id="agent-log"></p>
       </div>
-    </div>
+      <div class="field">
+        <label for="f-note">Ghi chú <span style="font-weight:400;color:var(--muted)">(không bắt buộc)</span></label>
+        <input id="f-note" name="ghi_chu" type="text" placeholder="Ít đá, ít ngọt…" toolparamdescription="Yêu cầu thêm như ít đá, ít ngọt">
+      </div>
+      <div class="quick-actions">
+        <button type="submit" class="btn primary">Thêm vào giỏ</button>
+        <button type="button" class="tip-btn" commandfor="ship-tip" command="toggle-popover">Nhận món thế nào?</button>
+      </div>
+      <div id="ship-tip" popover>Đặt trước, đến quán lấy ngay không phải chờ. Cần giao tận nơi thì gọi Grab hoặc Xanh SM, trong bán kính 3 km.</div>
+    </form>
   </section>
 
-  <!-- 7. Summarizer API có fallback -->
   <section id="danh-gia" class="reviews" aria-labelledby="rv-t">
-    <h2 id="rv-t">Khách nói gì</h2>
-    <p class="lead">Bấm tóm tắt: nếu trình duyệt có Summarizer API (Chrome desktop 138+), AI chạy ngay trên máy bạn; nếu không, trang dùng bản tóm tắt dự phòng.</p>
-    <ul>
-%%REVIEWS%%
-    </ul>
-    <button type="button" class="btn" id="summarize">Tóm tắt đánh giá</button>
+    <div class="sec-head">
+      <div>
+        <h2 id="rv-t">Khách nói gì</h2>
+        <p class="lead">Đánh giá mẫu, sẽ thay bằng đánh giá thật từ Google Maps.</p>
+      </div>
+      <button type="button" class="btn ghost" id="summarize">Tóm tắt nhanh</button>
+    </div>
     <div class="summary" id="summary" hidden>
       <span class="src" id="summary-src"></span>
       <div id="summary-text"></div>
     </div>
+    <ul style="margin-top:12px">
+%%REVIEWS%%
+    </ul>
   </section>
 
-  <!-- 8. Kiểm tra trình duyệt -->
-  <section id="ai-ready" aria-labelledby="ai-t">
-    <h2 id="ai-t">Trình duyệt của bạn hỗ trợ gì?</h2>
-    <p class="lead">Kiểm tra trực tiếp trên thiết bị đang mở trang. Tính năng chưa hỗ trợ vẫn có phương án dự phòng, trang không bị hỏng.</p>
+  <details class="dev" id="ai-ready">
+    <summary>Dành cho nhà phát triển: trang này đã sẵn sàng cho AI agent</summary>
     <ul class="checks" id="checks"></ul>
-    <div class="row" style="margin-top:14px">
+    <div class="cta">
       <button type="button" class="btn ghost" commandfor="dlg-jsonld" command="show-modal">Xem JSON-LD</button>
-      <button type="button" class="btn ghost" commandfor="dlg-md" command="show-modal">Xem bản Markdown cho agent</button>
+      <button type="button" class="btn ghost" commandfor="dlg-md" command="show-modal">Xem bản Markdown</button>
     </div>
-  </section>
+  </details>
 </main>
 
 <footer>
   <div class="wrap">
-    <p>Pota's Coffee · %%ADDRESS%% · %%CITY%%</p>
+    <p><strong>Pota's Coffee</strong> · %%ADDRESS%% · %%CITY%% · %%PHONE%%</p>
+    <p>Mở cửa %%HOURS%%. Mã nguồn: <a href="https://github.com/tuhuudev/pota-coffee">github.com/tuhuudev/pota-coffee</a></p>
   </div>
 </footer>
 
-<!-- Dialogs -->
+<div class="cartbar" id="cartbar" hidden>
+  <div class="sum"><small id="cart-count">0 món</small><b id="cart-total">0 đ</b></div>
+  <button type="button" class="btn" commandfor="dlg-cart" command="show-modal">Xem giỏ hàng</button>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
 %%DIALOGS%%
-<dialog id="dlg-done" aria-labelledby="done-t">
-  <h2 id="done-t">Đơn đã sẵn sàng</h2>
-  <div id="done-body"></div>
-  <p style="color:var(--muted);font-size:14px">Bản thử: đơn chưa được gửi tới quán. Bản thật sẽ gửi qua bot Telegram hoặc Google Sheet.</p>
-  <div class="row"><button type="button" class="btn" commandfor="dlg-done" command="close">Đóng</button></div>
+
+<dialog id="dlg-cart" class="sheet" aria-labelledby="cart-t">
+  <form method="dialog" id="checkout-form">
+    <div class="sheet-head" style="grid-template-columns:1fr auto">
+      <h2 id="cart-t">Giỏ hàng</h2>
+      <button type="button" class="x" commandfor="dlg-cart" command="close" aria-label="Đóng">&times;</button>
+    </div>
+    <ul class="lines" id="cart-lines"></ul>
+    <div class="total"><span>Tổng</span><span id="cart-total-sheet">0 đ</span></div>
+    <div class="two">
+      <label class="field">Tên của bạn <input name="ten" autocomplete="given-name" required placeholder="Ví dụ: Lan"></label>
+      <label class="field">Số điện thoại <input name="sdt" type="tel" autocomplete="tel" inputmode="tel" required placeholder="09…"></label>
+    </div>
+    <label class="field">Lấy lúc
+      <select name="gio">
+        <option>Càng sớm càng tốt (khoảng 10 phút)</option>
+        <option>Sau 20 phút</option>
+        <option>Sau 30 phút</option>
+        <option>Sau 1 giờ</option>
+      </select>
+    </label>
+    <button type="submit" class="btn primary block" id="checkout">Gửi đơn</button>
+    <p class="fine">Quán gọi lại xác nhận trước khi pha. Thanh toán khi nhận món.</p>
+  </form>
 </dialog>
-<dialog id="dlg-jsonld" class="wide" aria-labelledby="jl-t">
-  <h2 id="jl-t">JSON-LD (Schema.org)</h2>
-  <p style="color:var(--muted);font-size:14px;margin-top:0">Đây là dữ liệu có cấu trúc mà Google và AI search đọc để lấy giá, menu, giờ mở cửa.</p>
-  <pre>%%JSONLD_PRETTY%%</pre>
-  <div class="row"><button type="button" class="btn" commandfor="dlg-jsonld" command="close">Đóng</button></div>
+
+<dialog id="dlg-done" class="sheet" aria-labelledby="done-t">
+  <div class="dlg-body">
+    <h2 id="done-t">Đơn đã sẵn sàng</h2>
+    <div id="done-body"></div>
+    <p class="fine">Bản thử nghiệm: đơn chưa được gửi tới quán. Bản thật sẽ gửi qua bot Telegram của quán.</p>
+    <button type="button" class="btn primary block" commandfor="dlg-done" command="close">Xong</button>
+  </div>
 </dialog>
-<dialog id="dlg-md" class="wide" aria-labelledby="md-t">
-  <h2 id="md-t">Bản Markdown cho agent</h2>
-  <p style="color:var(--muted);font-size:14px;margin-top:0">Có tại <a href="index.md">index.md</a>; khi chuyển sang Cloudflare, server sẽ trả bản này cho request có header <code>Accept: text/markdown</code>. Sinh từ cùng dữ liệu với menu và JSON-LD.</p>
-  <pre>%%MARKDOWN%%</pre>
-  <div class="row"><button type="button" class="btn" commandfor="dlg-md" command="close">Đóng</button></div>
+<dialog id="dlg-jsonld" aria-labelledby="jl-t">
+  <div class="dlg-body">
+    <h2 id="jl-t">JSON-LD (Schema.org)</h2>
+    <p class="fine">Dữ liệu có cấu trúc để Google và AI search lấy đúng giá, menu, giờ mở cửa.</p>
+    <pre>%%JSONLD_PRETTY%%</pre>
+    <button type="button" class="btn ghost" commandfor="dlg-jsonld" command="close">Đóng</button>
+  </div>
+</dialog>
+<dialog id="dlg-md" aria-labelledby="md-t">
+  <div class="dlg-body">
+    <h2 id="md-t">Bản Markdown cho agent</h2>
+    <p class="fine">Trả về khi request có <code>Accept: text/markdown</code>, hoặc tại <a href="index.md">index.md</a>.</p>
+    <pre>%%MARKDOWN%%</pre>
+    <button type="button" class="btn ghost" commandfor="dlg-md" command="close">Đóng</button>
+  </div>
 </dialog>
 
 <script>
@@ -344,85 +464,131 @@ const byId = Object.fromEntries(DATA.menu.map(m => [m.id, m]));
 const vnd = n => n.toLocaleString('vi-VN') + ' đ';
 const $ = s => document.querySelector(s);
 
-/* ---- Fallback cho Invoker Commands (trình duyệt cũ) ---- */
+/* Invoker Commands fallback for older browsers */
 if (!('command' in HTMLButtonElement.prototype)) {
   document.addEventListener('click', ev => {
     const b = ev.target.closest('button[commandfor]');
     if (!b) return;
-    const t = document.getElementById(b.getAttribute('commandfor'));
-    const c = b.getAttribute('command');
+    const t = document.getElementById(b.getAttribute('commandfor')), c = b.getAttribute('command');
     if (!t) return;
-    if (c === 'show-modal') t.showModal();
-    else if (c === 'close') t.close();
+    if (c === 'show-modal') t.showModal(); else if (c === 'close') t.close();
     else if (c === 'toggle-popover' && t.togglePopover) t.togglePopover();
   });
 }
 
-/* ---- 2. Lọc menu với View Transitions ---- */
-document.querySelectorAll('[data-filter]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const f = btn.dataset.filter;
-    const apply = () => {
-      document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-      document.querySelectorAll('.card').forEach(c => { c.hidden = f !== 'all' && c.dataset.cat !== f; });
-    };
-    document.startViewTransition ? document.startViewTransition(apply) : apply();
-  });
-});
+/* Open / closed status in Vietnam time */
+(function () {
+  const el = $('#status');
+  const now = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date());
+  const isOpen = now >= DATA.open && now < DATA.close;
+  el.classList.add(isOpen ? 'open' : 'closed');
+  el.textContent = isOpen ? 'Đang mở cửa · đến ' + DATA.close : 'Đã đóng cửa · mở lại ' + DATA.open;
+})();
 
-/* ---- Giỏ hàng ---- */
-const cart = [];
+/* Toast */
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* Filter with View Transitions */
+document.querySelectorAll('[data-filter]').forEach(btn => btn.addEventListener('click', () => {
+  const f = btn.dataset.filter;
+  const apply = () => {
+    document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    document.querySelectorAll('.card').forEach(c => { c.hidden = f !== 'all' && c.dataset.cat !== f; });
+  };
+  document.startViewTransition ? document.startViewTransition(apply) : apply();
+}));
+
+/* Cart (kept in this browser only) */
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem('pota-cart') || '[]').filter(l => byId[l.id]); } catch { cart = []; }
+const save = () => { try { localStorage.setItem('pota-cart', JSON.stringify(cart)); } catch {} };
+const unitOf = (id, size) => byId[id].price + (DATA.sizes[size] || 0);
+
 function addToCart(id, size = 'M', qty = 1, note = '', via = 'bạn') {
   const item = byId[id];
   if (!item) throw new Error('Không có món ' + id);
   qty = Math.max(1, Math.min(20, parseInt(qty, 10) || 1));
   size = DATA.sizes[size] !== undefined ? size : 'M';
-  const unit = item.price + DATA.sizes[size];
-  cart.push({ id, name: item.name, size, qty, note, unit });
-  renderCart();
-  $('#agent-log').textContent = via === 'agent' ? 'AI agent vừa thêm ' + qty + ' × ' + item.name + ' (size ' + size + ').' : '';
-  return { name: item.name, size, qty, total: unit * qty };
+  const same = cart.find(l => l.id === id && l.size === size && l.note === note);
+  if (same) same.qty = Math.min(20, same.qty + qty); else cart.push({ id, size, qty, note });
+  save(); renderCart();
+  toast((via === 'agent' ? 'AI agent đã thêm ' : 'Đã thêm ') + qty + ' × ' + item.name + ' (' + size + ')');
+  return { name: item.name, size, qty, total: unitOf(id, size) * qty };
 }
+
 function renderCart() {
-  const ul = $('#cart-list');
-  ul.innerHTML = '';
-  if (!cart.length) { ul.innerHTML = '<li class="empty">Chưa có món nào.</li>'; }
-  cart.forEach(l => {
+  const count = cart.reduce((s, l) => s + l.qty, 0);
+  const total = cart.reduce((s, l) => s + unitOf(l.id, l.size) * l.qty, 0);
+  $('#cartbar').hidden = count === 0;
+  $('#cart-count').textContent = count + ' món';
+  $('#cart-total').textContent = vnd(total);
+  $('#cart-total-sheet').textContent = vnd(total);
+  const ul = $('#cart-lines'); ul.innerHTML = '';
+  if (!cart.length) { const li = document.createElement('li'); li.textContent = 'Giỏ đang trống.'; li.className = 'meta'; ul.append(li); }
+  cart.forEach((l, i) => {
     const li = document.createElement('li');
-    const left = document.createElement('span');
-    left.textContent = l.qty + ' × ' + l.name + ' (' + l.size + ')' + (l.note ? ' · ' + l.note : '');
-    const right = document.createElement('span');
-    right.textContent = vnd(l.unit * l.qty);
-    li.append(left, right);
+    const info = document.createElement('div');
+    const name = document.createElement('b'); name.textContent = byId[l.id].name;
+    const meta = document.createElement('div'); meta.className = 'meta';
+    meta.textContent = 'Size ' + l.size + (l.note ? ' · ' + l.note : '') + ' · ' + vnd(unitOf(l.id, l.size));
+    info.append(name, meta);
+    const amt = document.createElement('div'); amt.className = 'amt'; amt.textContent = vnd(unitOf(l.id, l.size) * l.qty);
+    const st = document.createElement('div'); st.className = 'stepper';
+    const minus = document.createElement('button'); minus.type = 'button'; minus.textContent = '−';
+    minus.setAttribute('aria-label', (l.qty === 1 ? 'Xoá ' : 'Bớt 1 ') + byId[l.id].name);
+    const out = document.createElement('output'); out.textContent = l.qty;
+    const plus = document.createElement('button'); plus.type = 'button'; plus.textContent = '+';
+    plus.setAttribute('aria-label', 'Thêm 1 ' + byId[l.id].name);
+    minus.onclick = () => { l.qty--; if (l.qty < 1) cart.splice(i, 1); save(); renderCart(); };
+    plus.onclick = () => { l.qty = Math.min(20, l.qty + 1); save(); renderCart(); };
+    st.append(minus, out, plus);
+    li.append(info, amt, st);
     ul.append(li);
   });
-  $('#cart-total').textContent = vnd(cart.reduce((s, l) => s + l.unit * l.qty, 0));
 }
+renderCart();
+
+/* Item sheets: size, qty stepper, live line total */
+document.querySelectorAll('.item-form').forEach(form => {
+  const id = form.dataset.item, qty = form.elements.qty, out = form.querySelector('[data-line-total]');
+  const update = () => { out.textContent = vnd(unitOf(id, form.elements.size.value) * Math.max(1, +qty.value || 1)); };
+  form.addEventListener('input', update);
+  form.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => {
+    qty.value = Math.max(1, Math.min(20, (+qty.value || 1) + +b.dataset.step)); update();
+  }));
+  form.addEventListener('submit', () => {
+    addToCart(id, form.elements.size.value, qty.value, form.elements.note.value.trim());
+    form.reset(); update();
+  });
+});
+
+/* Quick order form = WebMCP declarative tool */
 const form = $('#order-form');
 form.addEventListener('submit', ev => {
   ev.preventDefault();
   const fd = new FormData(form);
-  const r = addToCart(fd.get('mon'), fd.get('size'), fd.get('so_luong'), (fd.get('ghi_chu') || '').trim(),
-                      ev.agentInvoked ? 'agent' : 'bạn');
-  // WebMCP: trả kết quả cho agent nếu form được gọi như một tool
-  if (ev.agentInvoked && ev.respondWith) {
-    ev.respondWith(Promise.resolve('Đã thêm ' + r.qty + ' × ' + r.name + ' size ' + r.size + ', ' + vnd(r.total)));
-  }
-});
-document.querySelectorAll('[data-quick-add]').forEach(b =>
-  b.addEventListener('click', () => addToCart(b.dataset.quickAdd)));
-$('#clear-cart').addEventListener('click', () => { cart.length = 0; renderCart(); $('#agent-log').textContent = ''; });
-$('#checkout').addEventListener('click', () => {
-  const body = $('#done-body');
-  body.innerHTML = '';
-  const p = document.createElement('p');
-  p.textContent = cart.length
-    ? cart.length + ' dòng, tổng ' + $('#cart-total').textContent + '. Quán sẽ gọi xác nhận trước khi pha.'
-    : 'Giỏ đang trống. Thêm món trước khi gửi đơn.';
-  body.append(p);
+  const r = addToCart(fd.get('mon'), fd.get('size'), fd.get('so_luong'), (fd.get('ghi_chu') || '').trim(), ev.agentInvoked ? 'agent' : 'bạn');
+  if (ev.agentInvoked && ev.respondWith) ev.respondWith(Promise.resolve('Đã thêm ' + r.qty + ' × ' + r.name + ' size ' + r.size + ', ' + vnd(r.total)));
 });
 
-/* ---- 6b. WebMCP imperative tools ---- */
+/* Checkout (demo) */
+$('#checkout-form').addEventListener('submit', ev => {
+  if (!cart.length) { ev.preventDefault(); toast('Giỏ đang trống'); return; }
+  const fd = new FormData(ev.target);
+  const body = $('#done-body'); body.innerHTML = '';
+  const p = document.createElement('p');
+  p.textContent = 'Cảm ơn ' + fd.get('ten') + '! ' + cart.reduce((s, l) => s + l.qty, 0) + ' món, tổng ' + $('#cart-total').textContent +
+    '. Lấy: ' + fd.get('gio').toLowerCase() + '. Quán sẽ gọi ' + fd.get('sdt') + ' để xác nhận.';
+  body.append(p);
+  cart = []; save(); renderCart();
+  setTimeout(() => $('#dlg-done').showModal(), 50);
+});
+
+/* WebMCP imperative tools */
 const mc = document.modelContext ?? navigator.modelContext;
 let webmcpTools = 0;
 if (mc && typeof mc.registerTool === 'function') {
@@ -431,22 +597,14 @@ if (mc && typeof mc.registerTool === 'function') {
       name: 'xem_menu',
       description: "Trả về menu Pota's Coffee: mã món, tên, giá (VND), mô tả.",
       inputSchema: { type: 'object', properties: {} },
-      async execute() {
-        return { content: [{ type: 'text', text: JSON.stringify(DATA.menu.map(({ id, name, price, desc }) => ({ id, name, price, desc }))) }] };
-      }
+      async execute() { return { content: [{ type: 'text', text: JSON.stringify(DATA.menu.map(({ id, name, price, desc }) => ({ id, name, price, desc }))) }] }; }
     });
     mc.registerTool({
       name: 'them_vao_gio',
       description: 'Thêm món vào giỏ hàng. Người dùng vẫn phải bấm Gửi đơn để xác nhận.',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          mon: { type: 'string', enum: DATA.menu.map(m => m.id) },
-          size: { type: 'string', enum: ['M', 'L'] },
-          so_luong: { type: 'integer', minimum: 1, maximum: 20 }
-        },
-        required: ['mon']
-      },
+      inputSchema: { type: 'object', properties: {
+        mon: { type: 'string', enum: DATA.menu.map(m => m.id) }, size: { type: 'string', enum: Object.keys(DATA.sizes) },
+        so_luong: { type: 'integer', minimum: 1, maximum: 20 } }, required: ['mon'] },
       async execute({ mon, size = 'M', so_luong = 1 }) {
         const r = addToCart(mon, size, so_luong, '', 'agent');
         return { content: [{ type: 'text', text: 'Đã thêm ' + r.qty + ' × ' + r.name + ' size ' + r.size + ', ' + vnd(r.total) + '. Chờ người dùng bấm Gửi đơn.' }] };
@@ -456,7 +614,7 @@ if (mc && typeof mc.registerTool === 'function') {
   } catch (e) { console.log('WebMCP register failed', e); }
 }
 
-/* ---- 7. Summarizer với fallback ---- */
+/* Review summary: Summarizer API on device, fallback text */
 const FALLBACK_SUMMARY = [
   'Khen nhiều nhất: cà phê muối, trà đào cam sả, bạc xỉu vừa miệng.',
   'Giá rẻ, ly to, đóng ly kỹ, phục vụ nhanh và thân thiện.',
@@ -465,45 +623,37 @@ const FALLBACK_SUMMARY = [
 $('#summarize').addEventListener('click', async () => {
   const box = $('#summary'), src = $('#summary-src'), txt = $('#summary-text');
   box.hidden = false; txt.textContent = ''; src.textContent = 'Đang tóm tắt…';
-  const show = (lines, label) => {
-    src.textContent = label; txt.innerHTML = '';
-    lines.forEach(l => { const p = document.createElement('p'); p.textContent = l; txt.append(p); });
-  };
+  const show = (lines, label) => { src.textContent = label; txt.innerHTML = ''; lines.forEach(l => { const p = document.createElement('p'); p.textContent = l; txt.append(p); }); };
   try {
     if ('Summarizer' in self && (await Summarizer.availability()) !== 'unavailable') {
-      const s = await Summarizer.create({
-        type: 'key-points', length: 'short', format: 'plain-text', outputLanguage: 'en',
-        monitor(m) { m.addEventListener('downloadprogress', e => { src.textContent = 'Đang tải model: ' + Math.round(e.loaded * 100) + '%'; }); }
-      });
+      const s = await Summarizer.create({ type: 'key-points', length: 'short', format: 'plain-text', outputLanguage: 'en',
+        monitor(m) { m.addEventListener('downloadprogress', e => { src.textContent = 'Đang tải model: ' + Math.round(e.loaded * 100) + '%'; }); } });
       const out = await s.summarize(DATA.reviews.join('\n'), { context: 'Đánh giá của khách về một quán cà phê mang đi ở Việt Nam.' });
-      show(out.split('\n').map(l => l.replace(/^[-*•]\s*/, '')).filter(Boolean), 'Tóm tắt bởi Gemini Nano, chạy trên máy bạn (Summarizer API)');
+      show(out.split('\n').map(l => l.replace(/^[-*•]\s*/, '')).filter(Boolean), 'Tóm tắt bởi AI chạy ngay trên máy bạn');
       return;
     }
   } catch (e) { console.log('Summarizer failed', e); }
-  show(FALLBACK_SUMMARY, 'Trình duyệt không có Summarizer API: hiển thị bản dự phòng (bản thật sẽ gọi Gemini API trên server)');
+  show(FALLBACK_SUMMARY, 'Tóm tắt');
 });
 
-/* ---- 8. Kiểm tra trình duyệt ---- */
+/* Developer corner: feature checks */
 const has = (p, v) => { try { return CSS.supports(p, v); } catch { return false; } };
-const checks = [
+[
   ['Dialog + Popover', 'showPopover' in HTMLElement.prototype && 'showModal' in HTMLDialogElement.prototype, 'Modal, tooltip gốc của trình duyệt'],
-  ['Invoker Commands', 'command' in HTMLButtonElement.prototype, 'Nút mở/đóng bằng commandfor; nếu không có, trang dùng JS dự phòng'],
-  ['CSS Anchor Positioning', has('anchor-name', '--a'), 'Tooltip "?" bám theo nút; nếu không có, tooltip hiện giữa màn hình'],
+  ['Invoker Commands', 'command' in HTMLButtonElement.prototype, 'Nút mở/đóng bằng commandfor; không có thì dùng JS dự phòng'],
+  ['CSS Anchor Positioning', has('anchor-name', '--a'), 'Tooltip "Nhận món thế nào?" bám theo nút'],
   ['View Transitions', !!document.startViewTransition, 'Hiệu ứng khi lọc menu'],
-  ['Customizable select', has('appearance', 'base-select'), 'Select có tên và giá căn hai bên; nếu không có, dùng select gốc'],
-  ['WebMCP', !!mc, mc ? 'Đã đăng ký form dat_mon + ' + webmcpTools + ' tool JS' : 'Chỉ có trong Chrome 149+ với origin trial hoặc flag'],
+  ['Customizable select', has('appearance', 'base-select'), 'Ô chọn món có tên và giá căn hai bên'],
+  ['WebMCP', !!mc, mc ? 'Đã đăng ký form dat_mon + ' + webmcpTools + ' tool JS' : 'Chrome 149+ với origin trial hoặc flag'],
   ['Summarizer API', 'Summarizer' in self, 'Chrome desktop 138+, máy đủ cấu hình'],
   ['Prompt API', 'LanguageModel' in self, 'Chrome desktop 148+, máy đủ cấu hình'],
-];
-const ul = $('#checks');
-checks.forEach(([name, ok, note]) => {
-  const li = document.createElement('li');
-  li.className = ok ? 'yes' : 'no';
+].forEach(([name, ok, note]) => {
+  const li = document.createElement('li'); li.className = ok ? 'yes' : 'no';
   li.innerHTML = '<b></b><span class="state"></span><small></small>';
   li.querySelector('b').textContent = name;
   li.querySelector('.state').textContent = ok ? 'Có hỗ trợ' : 'Chưa hỗ trợ';
   li.querySelector('small').textContent = note;
-  ul.append(li);
+  $('#checks').append(li);
 });
 </script>
 </body>
