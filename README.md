@@ -72,6 +72,10 @@ Kết quả xem ở tab **Actions → run → Summary**.
 - [ ] Đăng ký WebMCP origin trial, thêm token vào `<meta http-equiv="origin-trial">`
 - [ ] Theo dõi hằng tuần: hỏi ChatGPT / Perplexity / Gemini "cà phê mang đi Phan Thiết" và ghi kết quả
 
+## Quy trình deploy
+
+`main` → GitHub Actions test → đạt thì đẩy sang `production` → Cloudflare Workers Builds deploy → test lại site thật (đợi đúng commit lên rồi mới test).
+
 ## Xem log bot AI (D1)
 
 ```sql
