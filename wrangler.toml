@@ -1,9 +1,18 @@
-# Cloudflare Pages project config (Git integration reads this file).
+# Cloudflare Worker + static assets (Workers Builds reads this file).
+# Build command: python build.py   Deploy command: npx wrangler deploy
 name = "pota-coffee"
-pages_build_output_dir = "dist"
+main = "worker/index.js"
 compatibility_date = "2026-11-01"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+run_worker_first = true
 
 [[d1_databases]]
 binding = "DB"
 database_name = "pota-coffee-analytics"
 database_id = "60af0cb3-8c80-4bf6-a56d-da38cd956c8a"
+
+[observability]
+enabled = true

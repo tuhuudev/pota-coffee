@@ -2,7 +2,7 @@
 
 Website cho quán cà phê mang đi Pota's Coffee (Phan Thiết), làm theo hướng **AI-friendly & browser-native**: HTML tĩnh, đúng ngữ nghĩa, JS tối thiểu, có dữ liệu cho AI search và tool cho AI agent.
 
-Site chính (Cloudflare Pages): https://pota-coffee.pages.dev/
+Site chính (Cloudflare Workers): https://pota-coffee.pages.dev/
 Bản dự phòng (GitHub Pages): https://tuhuudev.github.io/pota-coffee/
 
 > Menu, giá, đánh giá, số điện thoại hiện là **dữ liệu mẫu**. Sửa trong `data/shop.json`.
@@ -12,8 +12,8 @@ Bản dự phòng (GitHub Pages): https://tuhuudev.github.io/pota-coffee/
 ```
 data/shop.json        Nguồn dữ liệu duy nhất (quán, menu, size, đánh giá)
 src/template.html     Giao diện, CSS, JS
-functions/_middleware.js  Cloudflare: trả Markdown khi Accept: text/markdown + ghi log bot vào D1
-wrangler.toml         Cấu hình Cloudflare Pages (output dist/, D1 binding DB)
+worker/index.js       Cloudflare Worker: trả Markdown khi Accept: text/markdown + ghi log bot vào D1
+wrangler.toml         Cấu hình Worker + static assets dist/, D1 binding DB
 build.py              Sinh dist/: index.html (+ JSON-LD), index.md, llms.txt, robots.txt, sitemap.xml
 tests/agent_ready.py  Kiểm tra "agent-ready" + đo tốc độ trên điện thoại giả lập
 .github/workflows/    Build → test → deploy GitHub Pages → test lại site thật
@@ -69,7 +69,7 @@ Kết quả xem ở tab **Actions → run → Summary**.
 - [ ] Ảnh món (WebP/AVIF, `width`/`height`, `loading="lazy"`)
 - [ ] Tên miền riêng + Google Search Console + liên kết từ Google Maps
 - [ ] "Gửi đơn" gửi về bot Telegram của chủ quán
-- [x] Cloudflare Pages + Functions: trả Markdown khi `Accept: text/markdown`, log bot AI vào D1 `pota-coffee-analytics`
+- [x] Cloudflare Worker + static assets: trả Markdown khi `Accept: text/markdown`, log bot AI vào D1 `pota-coffee-analytics`
 - [ ] Đăng ký WebMCP origin trial, thêm token vào `<meta http-equiv="origin-trial">`
 - [ ] Theo dõi hằng tuần: hỏi ChatGPT / Perplexity / Gemini "cà phê mang đi Phan Thiết" và ghi kết quả
 

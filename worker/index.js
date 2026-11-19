@@ -1,5 +1,5 @@
-// Cloudflare Pages middleware: Markdown for agents + AI bot logging (D1).
-// Runs on every request to the Pages project.
+// Cloudflare Worker (static assets in dist/): Markdown for agents + AI bot logging (D1).
+// run_worker_first = true, so every request passes through here.
 
 const BOTS = [
   // [regex on User-Agent, bot name, kind]
@@ -35,8 +35,10 @@ function classify(ua) {
 
 const LOGGED = /^\/(index\.html|index\.md|llms\.txt|robots\.txt|sitemap\.xml)?$/;
 
-export async function onRequest(context) {
-  const { request, env, next, waitUntil } = context;
+export default {
+ async fetch(request, env, ctx) {
+  const next = () => env.ASSETS.fetch(request);
+  const waitUntil = p => ctx.waitUntil(p);
   const url = new URL(request.url);
   const ua = request.headers.get('user-agent') || '';
   const accept = request.headers.get('accept') || '';
@@ -77,4 +79,5 @@ export async function onRequest(context) {
     );
   }
   return response;
-}
+ },
+};
