@@ -2,7 +2,7 @@
 
 Website cho quán cà phê mang đi Pota's Coffee (Phan Thiết), làm theo hướng **AI-friendly & browser-native**: HTML tĩnh, đúng ngữ nghĩa, JS tối thiểu, có dữ liệu cho AI search và tool cho AI agent.
 
-Site chính (Cloudflare Workers): https://pota-coffee.pages.dev/
+Site chính (Cloudflare Workers): https://pota-coffee.tuhuu-dev.workers.dev/
 Bản dự phòng (GitHub Pages): https://tuhuudev.github.io/pota-coffee/
 
 > Menu, giá, đánh giá, số điện thoại hiện là **dữ liệu mẫu**. Sửa trong `data/shop.json`.
