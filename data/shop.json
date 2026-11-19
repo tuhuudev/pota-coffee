@@ -1,16 +1,19 @@
 {
-  "_note": "Nguồn dữ liệu duy nhất. Sửa menu/giá ở đây; HTML, JSON-LD, Markdown đều sinh từ file này. Dữ liệu hiện là MẪU.",
+  "_note": "Nguồn dữ liệu duy nhất. Thông tin quán đã thật (từ Google Maps 19/11/2026). MENU/GIÁ VẪN LÀ MẪU. close=null nghĩa là chưa biết giờ đóng cửa.",
   "shop": {
     "name": "Pota's Coffee",
     "city": "Phan Thiết",
     "region": "Lâm Đồng",
-    "hours": "Mo-Su 06:00-21:00",
-    "hours_text": "6:00 – 21:00, mở cả tuần",
-    "phone": "0900 000 000",
-    "address": "Địa chỉ quán (cập nhật từ Google Maps)",
-    "open": "06:00",
-    "close": "21:00",
-    "tagline": "Cà phê pha phin, mang đi trong 3 phút"
+    "hours": null,
+    "hours_text": "Mở cửa từ 5:30 sáng",
+    "phone": "0903 701 303",
+    "address": "06 Mười Chín Tháng Tư, Hàm Thắng",
+    "open": "05:30",
+    "close": null,
+    "tagline": "Cà phê rang xay, mang đi",
+    "maps_url": "https://maps.app.goo.gl/CzTC47P8rUAVmoGF9",
+    "rating": 4.6,
+    "rating_count": 17
   },
   "categories": {
     "ca-phe": "Cà phê",
@@ -95,11 +98,5 @@
       "tag": "Nhà làm"
     }
   ],
-  "reviews": [
-    "Cà phê muối ở đây ngon, kem muối béo mà không bị ngấy. Mua mang đi rất nhanh.",
-    "Giá rẻ so với khu vực, ly to. Sáng nào đi làm cũng ghé lấy một ly sữa đá.",
-    "Trà đào cam sả thơm, nhiều đào. Chỉ tiếc là quán nhỏ nên không có chỗ ngồi.",
-    "Chủ quán thân thiện, nhớ món quen. Cuối tuần đông nên phải chờ khoảng 5 phút.",
-    "Bạc xỉu vừa miệng, không quá ngọt. Đóng ly kỹ, đi xe máy không bị đổ."
-  ]
+  "reviews": []
 }

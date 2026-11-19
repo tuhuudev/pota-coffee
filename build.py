@@ -40,8 +40,9 @@ jsonld = {
     "url": SITE_URL,
     "servesCuisine": "Cà phê Việt Nam",
     "priceRange": f"{min(prices):,}–{max(prices):,} VND".replace(",", "."),
-    "openingHours": SHOP["hours"],
     "telephone": SHOP["phone"],
+    **({"openingHours": SHOP["hours"]} if SHOP.get("hours") else {}),
+    **({"hasMap": SHOP["maps_url"], "sameAs": [SHOP["maps_url"]]} if SHOP.get("maps_url") else {}),
     "address": {"@type": "PostalAddress", "streetAddress": SHOP["address"],
                 "addressLocality": SHOP["city"], "addressRegion": SHOP["region"],
                 "addressCountry": "VN"},
@@ -57,7 +58,9 @@ jsonld_str = json.dumps(jsonld, ensure_ascii=False, indent=2)
 
 # ---------- Markdown for agents ----------
 md = [f"# {SHOP['name']}", "",
-      f"Quán cà phê mang đi tại {SHOP['city']}. Giờ mở cửa: {SHOP['hours_text']}. Điện thoại: {SHOP['phone']}.", ""]
+      f"Quán cà phê mang đi tại {SHOP['address']}, {SHOP['city']}, {SHOP['region']}. {SHOP['hours_text']}. Điện thoại: {SHOP['phone']}."
+      + (f" Google Maps: {SHOP['maps_url']} ({SHOP.get('rating')}★, {SHOP.get('rating_count')} đánh giá)." if SHOP.get('maps_url') else ""),
+      "", "_Menu và giá dưới đây là dữ liệu mẫu, đang cập nhật._", ""]
 for key, label in CATS.items():
     md.append(f"## {label}")
     md += [f"- {m['name']}: {vnd(m['price'])} — {m['desc']}" for m in MENU if m["cat"] == key]
@@ -128,9 +131,12 @@ size_opts = "\n".join(
     f'<option value="{s["id"]}"><span class="opt-name">{e(s["label"])}</span><span class="sep"> · </span>'
     f'<span class="opt-price">{"+" + vnd(s["extra"]) if s["extra"] else "giá gốc"}</span></option>' for s in SIZES)
 reviews_html = "\n".join(f"<li>{e(r)}</li>" for r in REVIEWS)
+reviews_block = ('''    <div class="row" style="margin-top:12px"><button type="button" class="btn ghost" id="summarize">Tóm tắt nhanh</button></div>
+    <div class="summary" id="summary" hidden><span class="src" id="summary-src"></span><div id="summary-text"></div></div>
+    <ul style="margin-top:12px">''' + reviews_html + "</ul>") if REVIEWS else ""
 client_data = json.dumps({"menu": MENU, "sizes": {s["id"]: s["extra"] for s in SIZES},
                           "reviews": REVIEWS, "open": SHOP.get("open", "06:00"),
-                          "close": SHOP.get("close", "21:00")}, ensure_ascii=False)
+                          "close": SHOP.get("close")}, ensure_ascii=False)
 
 tpl = (ROOT / "src" / "template.html").read_text(encoding="utf-8")
 page = (tpl.replace("%%JSONLD%%", jsonld_str.replace("</", "<\\/"))
@@ -138,7 +144,11 @@ page = (tpl.replace("%%JSONLD%%", jsonld_str.replace("</", "<\\/"))
            .replace("%%DIALOGS%%", "".join(dialogs))
            .replace("%%OPTIONS%%", options)
            .replace("%%SIZE_OPTIONS%%", size_opts)
-           .replace("%%REVIEWS%%", reviews_html)
+           .replace("%%REVIEWS_BLOCK%%", reviews_block)
+           .replace("%%MAPS_URL%%", e(SHOP.get("maps_url", "#")))
+           .replace("%%RATING%%", str(SHOP.get("rating", "")).replace(".", ","))
+           .replace("%%RATING_COUNT%%", str(SHOP.get("rating_count", "")))
+           .replace("%%REGION%%", e(SHOP["region"]))
            .replace("%%CLIENT_DATA%%", client_data.replace("</", "<\\/"))
            .replace("%%MARKDOWN%%", e(markdown_str))
            .replace("%%JSONLD_PRETTY%%", e(jsonld_str))
