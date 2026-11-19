@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pota's Coffee</title>
+<meta name="description" content="Pota's Coffee – quán cà phê mang đi tại Phan Thiết. Menu, giá và đặt món online.">
+<link rel="canonical" href="%%SITE_URL%%">
+<link rel="alternate" type="text/markdown" href="index.md" title="Menu dạng Markdown cho AI agent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- 1. Structured data: sinh từ cùng nguồn dữ liệu với menu bên dưới -->
+<script type="application/ld+json">
+%%JSONLD%%
+</script>
+
+<style>
+/* Layout: một cột trên điện thoại, menu dạng lưới; màu biển Phan Thiết + nâu cà phê */
+:root {
+  --bg: #eef3f2;
+  --surface: #ffffff;
+  --ink: #1b2a2c;
+  --muted: #5b6d70;
+  --sea: #0a6b74;
+  --coffee: #6a4330;
+  --sun: #e7a33a;
+  --line: #d3dedc;
+  --ok: #1f7a4a;
+  --no: #a33a2c;
+  --display: "Bricolage Grotesque", "Be Vietnam Pro", system-ui, sans-serif;
+  --body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1a1b; --surface: #172526; --ink: #e6efee; --muted: #9db0b2;
+    --sea: #4fb8c1; --coffee: #d6a283; --sun: #f0b85a; --line: #2a3b3d;
+    --ok: #5cc98d; --no: #f08a7a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1a1b; --surface: #172526; --ink: #e6efee; --muted: #9db0b2;
+  --sea: #4fb8c1; --coffee: #d6a283; --sun: #f0b85a; --line: #2a3b3d;
+  --ok: #5cc98d; --no: #f08a7a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.55 var(--body);
+}
+a { color: var(--sea); }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+
+.demo-note {
+  background: var(--coffee); color: var(--bg); font-size: 14px; padding: 8px 0;
+}
+.demo-note p { margin: 0; }
+
+header.site { padding: 28px 0 20px; border-bottom: 1px solid var(--line); view-transition-name: site-header; }
+header.site .wrap { display: grid; gap: 10px; }
+.brand { font-size: clamp(34px, 8vw, 56px); font-weight: 800; letter-spacing: -0.02em; }
+.brand span { color: var(--sea); }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 15px; margin: 0; padding: 0; list-style: none; }
+.facts li { display: flex; align-items: center; gap: 6px; }
+
+nav.top ul { display: flex; gap: 16px; list-style: none; margin: 4px 0 0; padding: 0; font-weight: 600; }
+
+main { display: grid; gap: 40px; padding: 28px 0 48px; }
+section > h2 { font-size: 26px; margin-bottom: 14px; }
+.lead { color: var(--muted); margin: -6px 0 16px; max-width: 62ch; }
+
+/* ---- buttons ---- */
+.btn {
+  font: 600 15px/1 var(--body); border: 0; border-radius: 10px; cursor: pointer;
+  padding: 11px 16px; background: var(--sea); color: var(--surface);
+}
+.btn.ghost { background: transparent; color: var(--sea); box-shadow: inset 0 0 0 1.5px var(--sea); }
+.btn:hover { filter: brightness(1.08); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ---- filter ---- */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.filters button {
+  font: 500 15px/1 var(--body); padding: 9px 14px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+}
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* ---- menu cards ---- */
+.menu { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px; display: grid; gap: 8px; align-content: start;
+}
+.card[hidden] { display: none; }
+.card h3 { font-size: 19px; font-weight: 600; }
+.card-top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+.cat { color: var(--muted); }
+.chip { background: color-mix(in srgb, var(--sun) 22%, transparent); color: var(--coffee); padding: 3px 8px; border-radius: 999px; font-weight: 600; }
+.price { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--coffee); }
+.price.big { font-size: 22px; }
+.price small { font-weight: 400; color: var(--muted); font-size: 14px; }
+.card .btn { justify-self: start; padding: 8px 12px; font-size: 14px; }
+
+::view-transition-group(*) { animation-duration: 240ms; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* ---- dialogs ---- */
+dialog {
+  border: 0; border-radius: 16px; padding: 20px; width: min(440px, calc(100% - 32px));
+  background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgb(0 0 0 / .25);
+}
+dialog::backdrop { background: rgb(10 30 32 / .45); backdrop-filter: blur(2px); }
+dialog h2 { font-size: 24px; margin-bottom: 8px; }
+dialog pre { max-height: 55vh; overflow: auto; font-size: 12.5px; background: var(--bg); padding: 12px; border-radius: 10px; white-space: pre-wrap; word-break: break-word; }
+dialog.wide { width: min(640px, calc(100% - 32px)); }
+
+/* ---- popover + anchor positioning ---- */
+.tip-btn {
+  anchor-name: --ship-tip;
+  width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--muted);
+  background: transparent; color: var(--muted); font: 700 13px/1 var(--body); cursor: pointer; padding: 0;
+}
+#ship-tip {
+  margin: 0; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; max-width: 260px;
+  background: var(--ink); color: var(--bg); font-size: 14px;
+  position-anchor: --ship-tip; position-area: bottom span-right; margin-top: 8px;
+  position-try-fallbacks: flip-block, flip-inline;
+}
+
+/* ---- order form ---- */
+.order { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .order { grid-template-columns: 1.2fr 1fr; } }
+form.panel, .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+form.panel { display: grid; gap: 12px; }
+.field { display: grid; gap: 5px; }
+.field label { font-weight: 600; font-size: 14px; }
+.field input, .field select, .field textarea {
+  font: 16px/1.3 var(--body); padding: 10px 12px; border-radius: 10px;
+  border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); width: 100%;
+}
+.two { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+form.panel:tool-form-active { box-shadow: 0 0 0 3px var(--sun); }
+
+/* Customizable select (enhancement; trình duyệt khác giữ select gốc) */
+@supports (appearance: base-select) {
+  .field select, .field select::picker(select) { appearance: base-select; }
+  .field select::picker(select) { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 4px; }
+  .field select option { display: flex; justify-content: space-between; gap: 16px; padding: 9px 10px; border-radius: 8px; }
+  .field select option:checked { background: color-mix(in srgb, var(--sea) 14%, transparent); }
+  .field select option::checkmark { display: none; }
+  .field select .opt-price { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .field select selectedcontent .opt-price, .field select .sep { display: none; }
+}
+
+
+.cart ul { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 8px; }
+.cart li { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px dashed var(--line); padding-bottom: 8px; font-variant-numeric: tabular-nums; }
+.cart .total { display: flex; justify-content: space-between; font-weight: 700; font-size: 18px; font-variant-numeric: tabular-nums; }
+.empty { color: var(--muted); }
+.agent-log { font-size: 13px; color: var(--muted); margin: 10px 0 0; min-height: 1em; }
+
+/* ---- reviews ---- */
+.reviews ul { margin: 0 0 14px; padding-left: 20px; display: grid; gap: 6px; max-width: 70ch; }
+.summary { border-left: 4px solid var(--sea); padding: 10px 14px; background: var(--surface); border-radius: 0 10px 10px 0; margin-top: 12px; }
+.summary p { margin: 4px 0 0; }
+.summary .src { font-size: 13px; color: var(--muted); }
+
+/* ---- AI-ready check ---- */
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.checks li { background: var(--surface); border: 1px solid var(--line); border-left-width: 5px; border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; }
+.checks li.yes { border-left-color: var(--ok); }
+.checks li.no { border-left-color: var(--no); }
+.checks b { font-size: 15px; }
+.checks .state { font-size: 13px; font-weight: 600; }
+.checks .yes .state { color: var(--ok); }
+.checks .no .state { color: var(--no); }
+.checks small { color: var(--muted); font-size: 13px; }
+
+footer { border-top: 1px solid var(--line); padding: 20px 0 32px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="demo-note" role="note">
+  <div class="wrap"><p>Bản thử nghiệm: menu, giá, đánh giá và số điện thoại là dữ liệu mẫu.</p></div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <h1 class="brand">Pota's <span>Coffee</span></h1>
+    <ul class="facts" aria-label="Thông tin quán">
+      <li>Cà phê mang đi · %%CITY%%</li>
+      <li>Mở cửa %%HOURS%%</li>
+      <li>Gọi đặt: %%PHONE%%</li>
+    </ul>
+    <nav class="top" aria-label="Điều hướng chính">
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#dat-mon">Đặt món</a></li>
+        <li><a href="#danh-gia">Đánh giá</a></li>
+        <li><a href="#ai-ready">AI-ready</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 2. Menu: lọc với View Transitions; 3. chi tiết bằng <dialog> + invoker commands -->
+  <section id="menu" aria-labelledby="menu-t">
+    <h2 id="menu-t">Menu</h2>
+    <p class="lead">Bấm nhóm để lọc. Bấm "Chi tiết" để xem mô tả món: hộp thoại mở bằng thuộc tính HTML, không cần JavaScript.</p>
+    <div class="filters" role="group" aria-label="Lọc theo nhóm">
+      <button type="button" data-filter="all" aria-pressed="true">Tất cả</button>
+      <button type="button" data-filter="ca-phe" aria-pressed="false">Cà phê</button>
+      <button type="button" data-filter="tra" aria-pressed="false">Trà</button>
+      <button type="button" data-filter="khac" aria-pressed="false">Món khác</button>
+    </div>
+    <ul class="menu">%%CARDS%%
+    </ul>
+  </section>
+
+  <!-- 6. Form đặt món = WebMCP declarative tool -->
+  <section id="dat-mon" aria-labelledby="order-t">
+    <h2 id="order-t">Đặt món mang đi</h2>
+    <p class="lead">Form này cũng là một tool cho AI agent (WebMCP): agent có thể điền và gửi đơn thay bạn, bạn vẫn thấy và xác nhận.</p>
+    <div class="order">
+      <form class="panel" id="order-form"
+            toolname="dat_mon"
+            tooldescription="Thêm một món vào giỏ hàng mang đi của Pota's Coffee. Chọn món, size và số lượng.">
+        <div class="field">
+          <label for="f-item">Món</label>
+          <select id="f-item" name="mon" required toolparamdescription="Mã món trong menu, ví dụ sua-da hoặc muoi">
+            <button><selectedcontent></selectedcontent></button>
+%%OPTIONS%%
+          </select>
+        </div>
+        <div class="two">
+          <div class="field">
+            <label for="f-size">Size</label>
+            <select id="f-size" name="size" toolparamdescription="M hoặc L (L thêm 5.000 đ)">
+              <button><selectedcontent></selectedcontent></button>
+%%SIZE_OPTIONS%%
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-qty">Số lượng</label>
+            <input id="f-qty" name="so_luong" type="number" min="1" max="20" value="1" required
+                   toolparamdescription="Số ly, từ 1 đến 20">
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-note">Ghi chú <span style="font-weight:400;color:var(--muted)">(không bắt buộc)</span></label>
+          <input id="f-note" name="ghi_chu" type="text" placeholder="Ít đá, ít ngọt…"
+                 toolparamdescription="Yêu cầu thêm như ít đá, ít ngọt">
+        </div>
+        <div class="row" style="align-items:center">
+          <button type="submit" class="btn">Thêm vào giỏ</button>
+          <button type="button" class="tip-btn" commandfor="ship-tip" command="toggle-popover"
+                  aria-label="Cách nhận món">?</button>
+          <span style="font-size:14px;color:var(--muted)">Nhận món thế nào?</span>
+        </div>
+        <div id="ship-tip" popover>Đặt trước, đến quán lấy ngay không phải chờ. Giao tận nơi qua Grab hoặc Xanh SM trong bán kính 3 km. Tooltip này bám theo nút "?" bằng CSS Anchor Positioning.</div>
+      </form>
+
+      <div class="panel cart" aria-live="polite">
+        <h3 style="font-size:20px;margin-bottom:10px">Giỏ hàng</h3>
+        <ul id="cart-list"><li class="empty">Chưa có món nào.</li></ul>
+        <div class="total"><span>Tổng</span><span id="cart-total">0 đ</span></div>
+        <div class="row" style="margin-top:12px">
+          <button type="button" class="btn" id="checkout" commandfor="dlg-done" command="show-modal">Gửi đơn</button>
+          <button type="button" class="btn ghost" id="clear-cart">Xoá giỏ</button>
+        </div>
+        <p class="agent-log" id="agent-log"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Summarizer API có fallback -->
+  <section id="danh-gia" class="reviews" aria-labelledby="rv-t">
+    <h2 id="rv-t">Khách nói gì</h2>
+    <p class="lead">Bấm tóm tắt: nếu trình duyệt có Summarizer API (Chrome desktop 138+), AI chạy ngay trên máy bạn; nếu không, trang dùng bản tóm tắt dự phòng.</p>
+    <ul>
+%%REVIEWS%%
+    </ul>
+    <button type="button" class="btn" id="summarize">Tóm tắt đánh giá</button>
+    <div class="summary" id="summary" hidden>
+      <span class="src" id="summary-src"></span>
+      <div id="summary-text"></div>
+    </div>
+  </section>
+
+  <!-- 8. Kiểm tra trình duyệt -->
+  <section id="ai-ready" aria-labelledby="ai-t">
+    <h2 id="ai-t">Trình duyệt của bạn hỗ trợ gì?</h2>
+    <p class="lead">Kiểm tra trực tiếp trên thiết bị đang mở trang. Tính năng chưa hỗ trợ vẫn có phương án dự phòng, trang không bị hỏng.</p>
+    <ul class="checks" id="checks"></ul>
+    <div class="row" style="margin-top:14px">
+      <button type="button" class="btn ghost" commandfor="dlg-jsonld" command="show-modal">Xem JSON-LD</button>
+      <button type="button" class="btn ghost" commandfor="dlg-md" command="show-modal">Xem bản Markdown cho agent</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Pota's Coffee · %%ADDRESS%% · %%CITY%%</p>
+  </div>
+</footer>
+
+<!-- Dialogs -->
+%%DIALOGS%%
+<dialog id="dlg-done" aria-labelledby="done-t">
+  <h2 id="done-t">Đơn đã sẵn sàng</h2>
+  <div id="done-body"></div>
+  <p style="color:var(--muted);font-size:14px">Bản thử: đơn chưa được gửi tới quán. Bản thật sẽ gửi qua bot Telegram hoặc Google Sheet.</p>
+  <div class="row"><button type="button" class="btn" commandfor="dlg-done" command="close">Đóng</button></div>
+</dialog>
+<dialog id="dlg-jsonld" class="wide" aria-labelledby="jl-t">
+  <h2 id="jl-t">JSON-LD (Schema.org)</h2>
+  <p style="color:var(--muted);font-size:14px;margin-top:0">Đây là dữ liệu có cấu trúc mà Google và AI search đọc để lấy giá, menu, giờ mở cửa.</p>
+  <pre>%%JSONLD_PRETTY%%</pre>
+  <div class="row"><button type="button" class="btn" commandfor="dlg-jsonld" command="close">Đóng</button></div>
+</dialog>
+<dialog id="dlg-md" class="wide" aria-labelledby="md-t">
+  <h2 id="md-t">Bản Markdown cho agent</h2>
+  <p style="color:var(--muted);font-size:14px;margin-top:0">Có tại <a href="index.md">index.md</a>; khi chuyển sang Cloudflare, server sẽ trả bản này cho request có header <code>Accept: text/markdown</code>. Sinh từ cùng dữ liệu với menu và JSON-LD.</p>
+  <pre>%%MARKDOWN%%</pre>
+  <div class="row"><button type="button" class="btn" commandfor="dlg-md" command="close">Đóng</button></div>
+</dialog>
+
+<script>
+const DATA = %%CLIENT_DATA%%;
+const byId = Object.fromEntries(DATA.menu.map(m => [m.id, m]));
+const vnd = n => n.toLocaleString('vi-VN') + ' đ';
+const $ = s => document.querySelector(s);
+
+/* ---- Fallback cho Invoker Commands (trình duyệt cũ) ---- */
+if (!('command' in HTMLButtonElement.prototype)) {
+  document.addEventListener('click', ev => {
+    const b = ev.target.closest('button[commandfor]');
+    if (!b) return;
+    const t = document.getElementById(b.getAttribute('commandfor'));
+    const c = b.getAttribute('command');
+    if (!t) return;
+    if (c === 'show-modal') t.showModal();
+    else if (c === 'close') t.close();
+    else if (c === 'toggle-popover' && t.togglePopover) t.togglePopover();
+  });
+}
+
+/* ---- 2. Lọc menu với View Transitions ---- */
+document.querySelectorAll('[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const f = btn.dataset.filter;
+    const apply = () => {
+      document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      document.querySelectorAll('.card').forEach(c => { c.hidden = f !== 'all' && c.dataset.cat !== f; });
+    };
+    document.startViewTransition ? document.startViewTransition(apply) : apply();
+  });
+});
+
+/* ---- Giỏ hàng ---- */
+const cart = [];
+function addToCart(id, size = 'M', qty = 1, note = '', via = 'bạn') {
+  const item = byId[id];
+  if (!item) throw new Error('Không có món ' + id);
+  qty = Math.max(1, Math.min(20, parseInt(qty, 10) || 1));
+  size = DATA.sizes[size] !== undefined ? size : 'M';
+  const unit = item.price + DATA.sizes[size];
+  cart.push({ id, name: item.name, size, qty, note, unit });
+  renderCart();
+  $('#agent-log').textContent = via === 'agent' ? 'AI agent vừa thêm ' + qty + ' × ' + item.name + ' (size ' + size + ').' : '';
+  return { name: item.name, size, qty, total: unit * qty };
+}
+function renderCart() {
+  const ul = $('#cart-list');
+  ul.innerHTML = '';
+  if (!cart.length) { ul.innerHTML = '<li class="empty">Chưa có món nào.</li>'; }
+  cart.forEach(l => {
+    const li = document.createElement('li');
+    const left = document.createElement('span');
+    left.textContent = l.qty + ' × ' + l.name + ' (' + l.size + ')' + (l.note ? ' · ' + l.note : '');
+    const right = document.createElement('span');
+    right.textContent = vnd(l.unit * l.qty);
+    li.append(left, right);
+    ul.append(li);
+  });
+  $('#cart-total').textContent = vnd(cart.reduce((s, l) => s + l.unit * l.qty, 0));
+}
+const form = $('#order-form');
+form.addEventListener('submit', ev => {
+  ev.preventDefault();
+  const fd = new FormData(form);
+  const r = addToCart(fd.get('mon'), fd.get('size'), fd.get('so_luong'), (fd.get('ghi_chu') || '').trim(),
+                      ev.agentInvoked ? 'agent' : 'bạn');
+  // WebMCP: trả kết quả cho agent nếu form được gọi như một tool
+  if (ev.agentInvoked && ev.respondWith) {
+    ev.respondWith(Promise.resolve('Đã thêm ' + r.qty + ' × ' + r.name + ' size ' + r.size + ', ' + vnd(r.total)));
+  }
+});
+document.querySelectorAll('[data-quick-add]').forEach(b =>
+  b.addEventListener('click', () => addToCart(b.dataset.quickAdd)));
+$('#clear-cart').addEventListener('click', () => { cart.length = 0; renderCart(); $('#agent-log').textContent = ''; });
+$('#checkout').addEventListener('click', () => {
+  const body = $('#done-body');
+  body.innerHTML = '';
+  const p = document.createElement('p');
+  p.textContent = cart.length
+    ? cart.length + ' dòng, tổng ' + $('#cart-total').textContent + '. Quán sẽ gọi xác nhận trước khi pha.'
+    : 'Giỏ đang trống. Thêm món trước khi gửi đơn.';
+  body.append(p);
+});
+
+/* ---- 6b. WebMCP imperative tools ---- */
+const mc = document.modelContext ?? navigator.modelContext;
+let webmcpTools = 0;
+if (mc && typeof mc.registerTool === 'function') {
+  try {
+    mc.registerTool({
+      name: 'xem_menu',
+      description: "Trả về menu Pota's Coffee: mã món, tên, giá (VND), mô tả.",
+      inputSchema: { type: 'object', properties: {} },
+      async execute() {
+        return { content: [{ type: 'text', text: JSON.stringify(DATA.menu.map(({ id, name, price, desc }) => ({ id, name, price, desc }))) }] };
+      }
+    });
+    mc.registerTool({
+      name: 'them_vao_gio',
+      description: 'Thêm món vào giỏ hàng. Người dùng vẫn phải bấm Gửi đơn để xác nhận.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          mon: { type: 'string', enum: DATA.menu.map(m => m.id) },
+          size: { type: 'string', enum: ['M', 'L'] },
+          so_luong: { type: 'integer', minimum: 1, maximum: 20 }
+        },
+        required: ['mon']
+      },
+      async execute({ mon, size = 'M', so_luong = 1 }) {
+        const r = addToCart(mon, size, so_luong, '', 'agent');
+        return { content: [{ type: 'text', text: 'Đã thêm ' + r.qty + ' × ' + r.name + ' size ' + r.size + ', ' + vnd(r.total) + '. Chờ người dùng bấm Gửi đơn.' }] };
+      }
+    });
+    webmcpTools = 2;
+  } catch (e) { console.log('WebMCP register failed', e); }
+}
+
+/* ---- 7. Summarizer với fallback ---- */
+const FALLBACK_SUMMARY = [
+  'Khen nhiều nhất: cà phê muối, trà đào cam sả, bạc xỉu vừa miệng.',
+  'Giá rẻ, ly to, đóng ly kỹ, phục vụ nhanh và thân thiện.',
+  'Điểm trừ: không có chỗ ngồi, cuối tuần phải chờ khoảng 5 phút.'
+];
+$('#summarize').addEventListener('click', async () => {
+  const box = $('#summary'), src = $('#summary-src'), txt = $('#summary-text');
+  box.hidden = false; txt.textContent = ''; src.textContent = 'Đang tóm tắt…';
+  const show = (lines, label) => {
+    src.textContent = label; txt.innerHTML = '';
+    lines.forEach(l => { const p = document.createElement('p'); p.textContent = l; txt.append(p); });
+  };
+  try {
+    if ('Summarizer' in self && (await Summarizer.availability()) !== 'unavailable') {
+      const s = await Summarizer.create({
+        type: 'key-points', length: 'short', format: 'plain-text', outputLanguage: 'en',
+        monitor(m) { m.addEventListener('downloadprogress', e => { src.textContent = 'Đang tải model: ' + Math.round(e.loaded * 100) + '%'; }); }
+      });
+      const out = await s.summarize(DATA.reviews.join('\n'), { context: 'Đánh giá của khách về một quán cà phê mang đi ở Việt Nam.' });
+      show(out.split('\n').map(l => l.replace(/^[-*•]\s*/, '')).filter(Boolean), 'Tóm tắt bởi Gemini Nano, chạy trên máy bạn (Summarizer API)');
+      return;
+    }
+  } catch (e) { console.log('Summarizer failed', e); }
+  show(FALLBACK_SUMMARY, 'Trình duyệt không có Summarizer API: hiển thị bản dự phòng (bản thật sẽ gọi Gemini API trên server)');
+});
+
+/* ---- 8. Kiểm tra trình duyệt ---- */
+const has = (p, v) => { try { return CSS.supports(p, v); } catch { return false; } };
+const checks = [
+  ['Dialog + Popover', 'showPopover' in HTMLElement.prototype && 'showModal' in HTMLDialogElement.prototype, 'Modal, tooltip gốc của trình duyệt'],
+  ['Invoker Commands', 'command' in HTMLButtonElement.prototype, 'Nút mở/đóng bằng commandfor; nếu không có, trang dùng JS dự phòng'],
+  ['CSS Anchor Positioning', has('anchor-name', '--a'), 'Tooltip "?" bám theo nút; nếu không có, tooltip hiện giữa màn hình'],
+  ['View Transitions', !!document.startViewTransition, 'Hiệu ứng khi lọc menu'],
+  ['Customizable select', has('appearance', 'base-select'), 'Select có tên và giá căn hai bên; nếu không có, dùng select gốc'],
+  ['WebMCP', !!mc, mc ? 'Đã đăng ký form dat_mon + ' + webmcpTools + ' tool JS' : 'Chỉ có trong Chrome 149+ với origin trial hoặc flag'],
+  ['Summarizer API', 'Summarizer' in self, 'Chrome desktop 138+, máy đủ cấu hình'],
+  ['Prompt API', 'LanguageModel' in self, 'Chrome desktop 148+, máy đủ cấu hình'],
+];
+const ul = $('#checks');
+checks.forEach(([name, ok, note]) => {
+  const li = document.createElement('li');
+  li.className = ok ? 'yes' : 'no';
+  li.innerHTML = '<b></b><span class="state"></span><small></small>';
+  li.querySelector('b').textContent = name;
+  li.querySelector('.state').textContent = ok ? 'Có hỗ trợ' : 'Chưa hỗ trợ';
+  li.querySelector('small').textContent = note;
+  ul.append(li);
+});
+</script>
+</body>
+</html>

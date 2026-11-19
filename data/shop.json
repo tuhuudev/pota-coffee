@@ -1,0 +1,102 @@
+{
+  "_note": "Nguồn dữ liệu duy nhất. Sửa menu/giá ở đây; HTML, JSON-LD, Markdown đều sinh từ file này. Dữ liệu hiện là MẪU.",
+  "shop": {
+    "name": "Pota's Coffee",
+    "city": "Phan Thiết",
+    "region": "Lâm Đồng",
+    "hours": "Mo-Su 06:00-21:00",
+    "hours_text": "6:00 – 21:00, mở cả tuần",
+    "phone": "0900 000 000",
+    "address": "Địa chỉ quán (cập nhật từ Google Maps)"
+  },
+  "categories": {
+    "ca-phe": "Cà phê",
+    "tra": "Trà",
+    "khac": "Món khác"
+  },
+  "sizes": [
+    {
+      "id": "M",
+      "label": "Size M",
+      "extra": 0
+    },
+    {
+      "id": "L",
+      "label": "Size L",
+      "extra": 5000
+    }
+  ],
+  "menu": [
+    {
+      "id": "den-da",
+      "cat": "ca-phe",
+      "name": "Cà phê đen đá",
+      "price": 18000,
+      "desc": "Robusta rang đậm, pha phin, đá viên to.",
+      "tag": "Đậm"
+    },
+    {
+      "id": "sua-da",
+      "cat": "ca-phe",
+      "name": "Cà phê sữa đá",
+      "price": 22000,
+      "desc": "Phin truyền thống với sữa đặc, vị cân bằng.",
+      "tag": "Bán chạy"
+    },
+    {
+      "id": "bac-xiu",
+      "cat": "ca-phe",
+      "name": "Bạc xỉu",
+      "price": 25000,
+      "desc": "Nhiều sữa, ít cà phê, hợp người mới uống.",
+      "tag": "Nhẹ"
+    },
+    {
+      "id": "muoi",
+      "cat": "ca-phe",
+      "name": "Cà phê muối",
+      "price": 28000,
+      "desc": "Lớp kem muối béo mặn phủ trên cà phê sữa.",
+      "tag": "Đặc biệt"
+    },
+    {
+      "id": "tra-dao",
+      "cat": "tra",
+      "name": "Trà đào cam sả",
+      "price": 30000,
+      "desc": "Trà đen ủ lạnh, đào miếng, cam tươi, sả.",
+      "tag": "Mát"
+    },
+    {
+      "id": "tra-tac",
+      "cat": "tra",
+      "name": "Trà tắc",
+      "price": 15000,
+      "desc": "Trà xanh, tắc tươi vắt tại chỗ.",
+      "tag": "Rẻ"
+    },
+    {
+      "id": "matcha",
+      "cat": "khac",
+      "name": "Matcha latte",
+      "price": 35000,
+      "desc": "Matcha Nhật đánh tay với sữa tươi.",
+      "tag": "Mới"
+    },
+    {
+      "id": "sua-chua",
+      "cat": "khac",
+      "name": "Sữa chua đá",
+      "price": 25000,
+      "desc": "Sữa chua nhà làm, đá bào, ít ngọt.",
+      "tag": "Nhà làm"
+    }
+  ],
+  "reviews": [
+    "Cà phê muối ở đây ngon, kem muối béo mà không bị ngấy. Mua mang đi rất nhanh.",
+    "Giá rẻ so với khu vực, ly to. Sáng nào đi làm cũng ghé lấy một ly sữa đá.",
+    "Trà đào cam sả thơm, nhiều đào. Chỉ tiếc là quán nhỏ nên không có chỗ ngồi.",
+    "Chủ quán thân thiện, nhớ món quen. Cuối tuần đông nên phải chờ khoảng 5 phút.",
+    "Bạc xỉu vừa miệng, không quá ngọt. Đóng ly kỹ, đi xe máy không bị đổ."
+  ]
+}

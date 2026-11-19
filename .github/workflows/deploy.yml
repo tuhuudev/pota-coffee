@@ -1,0 +1,71 @@
+name: Build, test, deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 1 * * 1" # thứ Hai 8:17 sáng giờ VN: kiểm tra lại site thật
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SITE_URL: https://tuhuudev.github.io/pota-coffee/
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install playwright==1.49.1 && python -m playwright install --with-deps chromium
+      - name: Build
+        run: python build.py
+      - name: Agent-ready tests (local build)
+        run: python tests/agent_ready.py --runs 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-local
+          path: results/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build-test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  live-check:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install playwright==1.49.1 && python -m playwright install --with-deps chromium
+      - name: Agent-ready tests (live site)
+        run: sleep 20 && python tests/agent_ready.py --url "$SITE_URL" --runs 5
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-live
+          path: results/
