@@ -28,6 +28,8 @@ else:
     BASE = f"http://127.0.0.1:{srv.server_address[1]}/"
 
 checks, metrics = [], {}
+# Cloudflare blocks the default "Python-urllib" UA at the edge; real agents send their own UA.
+AGENT_UA = "Claude-User/1.0 (agent-ready test; +https://github.com/tuhuudev/pota-coffee)"
 def check(name, ok, detail=""):
     checks.append({"check": name, "ok": bool(ok), "detail": detail})
 
@@ -48,13 +50,13 @@ try:
 except Exception as ex:
     check("JSON-LD hợp lệ và giá khớp dữ liệu", False, str(ex))
 try:
-    md = urllib.request.urlopen(BASE + "index.md", timeout=30).read().decode("utf-8")
+    md = urllib.request.urlopen(urllib.request.Request(BASE + "index.md", headers={"User-Agent": AGENT_UA}), timeout=30).read().decode("utf-8")
     check("Có bản Markdown index.md", all(m["name"] in md for m in DATA["menu"]))
     metrics["markdown_tokens_est"] = round(len(md) / 3.2)
 except Exception as ex:
     check("Có bản Markdown index.md", False, str(ex))
 try:
-    r = urllib.request.urlopen(urllib.request.Request(BASE, headers={"Accept": "text/markdown"}), timeout=30)
+    r = urllib.request.urlopen(urllib.request.Request(BASE, headers={"Accept": "text/markdown", "User-Agent": AGENT_UA}), timeout=30)
     metrics["markdown_negotiation"] = r.headers.get("content-type", "").startswith("text/markdown")
 except Exception:
     metrics["markdown_negotiation"] = False
