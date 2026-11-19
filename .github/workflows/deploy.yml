@@ -1,4 +1,7 @@
-name: Build, test, deploy
+name: Test, promote, verify
+
+# main  --(tests pass)-->  production  --(Cloudflare Workers Builds)-->  live site
+# Cloudflare only deploys the `production` branch, so a failing test never reaches users.
 
 on:
   push:
@@ -9,17 +12,14 @@ on:
     - cron: "17 1 * * 1" # thứ Hai 8:17 sáng giờ VN: kiểm tra lại site thật
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: promote
   cancel-in-progress: false
 
 env:
-  SITE_URL: https://pota-coffee.tuhuu-dev.workers.dev/  # canonical (Cloudflare)
-  GH_PAGES_URL: https://tuhuudev.github.io/pota-coffee/
+  SITE_URL: https://pota-coffee.tuhuu-dev.workers.dev/
 
 jobs:
   build-test:
@@ -39,23 +39,21 @@ jobs:
         with:
           name: results-local
           path: results/
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
 
-  deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+  promote:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: build-test
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fast-forward production to this commit
+        run: git push origin "HEAD:refs/heads/production"
 
   live-check:
-    needs: deploy
+    needs: [build-test, promote]
+    if: always() && needs.build-test.result == 'success' && (needs.promote.result == 'success' || github.event_name == 'schedule')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -63,11 +61,16 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install playwright==1.49.1 && python -m playwright install --with-deps chromium
-      - name: Agent-ready tests (GitHub Pages)
-        run: sleep 20 && python tests/agent_ready.py --url "$GH_PAGES_URL" --runs 5
-      - name: Agent-ready tests (Cloudflare Workers)
-        continue-on-error: true
-        run: sleep 60 && python tests/agent_ready.py --url "$SITE_URL" --runs 5
+      - name: Wait for Cloudflare to deploy this commit
+        if: github.event_name != 'schedule'
+        run: |
+          for i in $(seq 1 30); do
+            if curl -s -A "Claude-User/1.0 (deploy-wait)" "$SITE_URL" | grep -q "build: ${GITHUB_SHA:0:7}"; then echo "live"; exit 0; fi
+            sleep 20
+          done
+          echo "Cloudflare chưa deploy commit này sau 10 phút"; exit 1
+      - name: Agent-ready tests (live site)
+        run: python tests/agent_ready.py --url "$SITE_URL" --runs 5
       - uses: actions/upload-artifact@v4
         if: always()
         with:

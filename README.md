@@ -3,7 +3,6 @@
 Website cho quán cà phê mang đi Pota's Coffee (Phan Thiết), làm theo hướng **AI-friendly & browser-native**: HTML tĩnh, đúng ngữ nghĩa, JS tối thiểu, có dữ liệu cho AI search và tool cho AI agent.
 
 Site chính (Cloudflare Workers): https://pota-coffee.tuhuu-dev.workers.dev/
-Bản dự phòng (GitHub Pages): https://tuhuudev.github.io/pota-coffee/
 
 > Menu, giá, đánh giá, số điện thoại hiện là **dữ liệu mẫu**. Sửa trong `data/shop.json`.
 
@@ -16,13 +15,13 @@ worker/index.js       Cloudflare Worker: trả Markdown khi Accept: text/markdow
 wrangler.toml         Cấu hình Worker + static assets dist/, D1 binding DB
 build.py              Sinh dist/: index.html (+ JSON-LD), index.md, llms.txt, robots.txt, sitemap.xml
 tests/agent_ready.py  Kiểm tra "agent-ready" + đo tốc độ trên điện thoại giả lập
-.github/workflows/    Build → test → deploy GitHub Pages → test lại site thật
+.github/workflows/    Test → đẩy main sang nhánh production → Cloudflare deploy → test site thật
 ```
 
 ## Sửa menu
 
 1. Sửa `data/shop.json` (tên, giá, mô tả, nhóm).
-2. Commit lên `main`. GitHub Actions tự build, chạy test, deploy.
+2. Commit lên `main`. GitHub Actions chạy test; đạt thì đẩy sang nhánh `production`, Cloudflare chỉ deploy nhánh này. Test fail thì site giữ bản cũ.
 3. HTML, JSON-LD và Markdown luôn khớp nhau vì cùng sinh từ một file.
 
 ## Chạy local

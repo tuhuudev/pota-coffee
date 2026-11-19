@@ -9,6 +9,7 @@ import html
 import json
 import os
 import shutil
+import subprocess
 from datetime import date
 from pathlib import Path
 
@@ -116,6 +117,13 @@ page = (tpl.replace("%%JSONLD%%", jsonld_str.replace("</", "<\\/"))
            .replace("%%PHONE%%", e(SHOP["phone"]))
            .replace("%%ADDRESS%%", e(SHOP["address"]))
            .replace("%%SITE_URL%%", e(SITE_URL)))
+sha = os.environ.get("WORKERS_CI_COMMIT_SHA") or os.environ.get("GITHUB_SHA")
+if not sha:
+    try:
+        sha = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
+    except OSError:
+        sha = ""
+page = page.replace("</html>", f"<!-- build: {(sha or 'local')[:7]} -->\n</html>")
 assert "%%" not in page, "placeholder chưa được thay"
 
 # ---------- write dist ----------
